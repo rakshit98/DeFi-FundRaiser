@@ -8,9 +8,9 @@ const Web3Utils = require('web3-utils');
             web3 = new Web3(web3.currentProvider);
         } else {
             // set the provider you want from Web3.providers
-            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+            web3 = new Web3(new Web3.providers.WebsocketProvider("wss://kovan.infura.io/ws/v3/d28ff5674c0848ada11af62d25c6a2f1"));
         }
-        // web3.eth.defaultChain = 'kovan';
+        web3.eth.defaultChain = 'kovan';
         var DaiContract = new web3.eth.Contract([
     {
         "constant": true,
@@ -233,16 +233,25 @@ const Web3Utils = require('web3-utils');
         "type": "event"
     }
 ],'0xC4375B7De8af5a38a93548eb8453a498222C4fF2');
-        console.log(DaiContract.defaultChain);
-        console.log(DaiContract.methods.balanceOf('0x3B1b198FE3Ee0428164a2fD38529CE958e63a0BD').call());
-        DaiContract.methods.balanceOf('0x3B1b198FE3Ee0428164a2fD38529CE958e63a0BD').call()
+    console.log(DaiContract.defaultChain);
+    $("#button").click(function() {
+        console.log($("#address1").val() + typeof($("#address1").val()));
+        DaiContract.methods.transferFrom($("#address1").val(), $("#address2").val(), $("#amount").val()).call()
         .then(function(result){
-                    $("#instructor").html(result.toString());
-                    console.log('Result : ' + result);
+            $("#result").html("Successfully transferred " + $("amount").val() + " Dai.");
+            console.log('Result : ' + result.toString());
+            DaiContract.methods.balanceOf($("#address1").val()).call()
+            .then(function(result){
+                // let value = parseInt(result, 10);
+                // $("#result").html(result.toString());
+                console.log('Remaining balance in address1 : ' + value);
+            })
+            .catch(function(error){
+                console.error('Error : ' + error);
+            });
         })
         .catch(function(error){
             console.error('Error : ' + error);
+            $("#result").html("Transfer failed");
         });
-        // $("#button").click(function() {
-        //             dai.balanceOf($("#name").val(), $("#age").val());
-        //         });
+    });
