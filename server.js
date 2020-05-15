@@ -1,12 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const dbConfig = require('./config/database.config.js');
+const dbConfig = require('./backend/config/database.config.js');
 const mongoose = require('mongoose');
 const axios = require('axios');
 const WebSocket = require('ws');
-const config = require('./config.js');
+const config = require('./backend/config.js');
 const mongo = require('mongodb').MongoClient
 const url = 'mongodb://localhost:27017'
+var path = require('path');
+const passportLocalMongoose = require('passport-local-mongoose');
+const passport = require('passport');
 
 if (!config.apiKey || !config.NGOContractAddress){
 	console.error('Fill up all values in config.js');
@@ -31,26 +34,37 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
+const expressSession = require('express-session')({
+  secret: 'secret',
+  resave: false,
+  saveUninitialized: false
+});
+
+app.use(expressSession);
+app.use(express.static(__dirname + '/frontend/'));
+// define a simple route
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve('./frontend/public/landing.html'));
+});
+
+require('./backend/app/routes/routes.js')(app);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Configuring the database
 mongoose.Promise = global.Promise;
+mongoose.connect('mongodb://localhost/MyDatabase',
+  { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Connecting to the database
-mongoose.connect(dbConfig.url, {
-    useNewUrlParser: true
-}).then(() => {
-    console.log("Successfully connected to the database");    
-}).catch(err => {
-    console.log('Could not connect to the database. Exiting now...', err);
-    process.exit();
+const Schema = mongoose.Schema;
+const UserDetail = new Schema({
+  username: String,
+  password: String
 });
 
-// define a simple route
-app.get('/', (req, res) => {
-    res.json({"message": "Welcome to the future of crowdfunding. Decentralized crowdfunding provides numerous benefits over it's centralized counterpart"});
-});
-
-require('./app/routes/routes.js')(app);
+UserDetail.plugin(passportLocalMongoose);
+const UserDetails = mongoose.model('userInfo', UserDetail, 'userInfo');
 
 // listen for requests
 app.listen(3000, () => {

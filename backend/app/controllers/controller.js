@@ -1,10 +1,16 @@
-const Fundraiser = require('../models/model.js');
+const Donor = require('../models/donor.js');
 const WebSocket = require('ws');
 const config = require('../../config.js');
 const mongo = require('mongodb').MongoClient
-const url = 'mongodb://localhost:27017'
+const passport = require('passport');
+const connectEnsureLogin = require('connect-ensure-login');
 
-// Create and Save a new Fundraiser
+passport.use(Donor.createStrategy());
+
+passport.serializeUser(Donor.serializeUser());
+passport.deserializeUser(Donor.deserializeUser());
+
+// Create and Save a new Donor
 exports.signUp = (req, res) => {
     // Validate request
     if(!req.body.content) {
@@ -13,14 +19,14 @@ exports.signUp = (req, res) => {
         });
     }
 
-    // Create a Fundraiser
-    const fundraiser = new Fundraiser({
+    // Create a Donor
+    const donor = new Donor({
         name: req.body.name || "Noname", 
         target: req.body.target
     });
 
-    // Save Fundraiser in the database
-    fundraiser.save()
+    // Save Donor in the database
+    donor.save()
     .then(data => {
         res.send(data);
     }).catch(err => {
@@ -30,51 +36,73 @@ exports.signUp = (req, res) => {
     });
 };
 
-// Retrieve and return all fundraisers from the database.
+exports.login = (req,res,next) => {
+	passport.authenticate('local',
+  (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!user) {
+      return res.redirect('/login?info=' + info);
+    }
+
+    req.logIn(user, function(err) {
+      if (err) {
+        return next(err);
+      }
+
+      return res.redirect('/');
+    });
+
+  })(req, res, next);
+}
+
+// Retrieve and return all donors from the database.
 exports.findAll = (req, res) => {
     Fundraiser.find()
-    .then(fundraisers => {
-        res.send(fundraisers);
+    .then(donors => {
+        res.send(donors);
     }).catch(err => {
         res.status(500).send({
-            message: err.message || "Some error occurred while retrieving fundraisers."
+            message: err.message || "Some error occurred while retrieving donors."
         });
     });
 };
 
-// Find a single fundraiser with a fundraiserId
+// Find a single donor with a donorId
 exports.findOne = (req, res) => {
     Note.findById(req.params.noteId)
-    .then(fundraiser => {
-        if(!fundraiser) {
+    .then(donor => {
+        if(!donor) {
             return res.status(404).send({
-                message: "Fundraiser not found with id " + req.params.fundraiserId
+                message: "Donor not found with id " + req.params.donorId
             });            
         }
-        res.send(fundraiser);
+        res.send(donor);
     }).catch(err => {
         if(err.kind === 'ObjectId') {
             return res.status(404).send({
-                message: "Fundraiser not found with id " + req.params.fundraiserId
+                message: "Donor not found with id " + req.params.donorId
             });                
         }
         return res.status(500).send({
-            message: "Error retrieving fundraiser with id " + req.params.fundraiserId
+            message: "Error retrieving donor with id " + req.params.donorId
         });
     });
 };
 
-// Update a fundraiser identified by the fundraiserId in the request
+// Update a donor identified by the donorId in the request
 // exports.update = (req, res) => {
 //     // Validate Request
 //     if(!req.body.content) {
 //         return res.status(400).send({
-//             message: "Fundraiser content can not be empty"
+//             message: "donor content can not be empty"
 //         });
 //     }
 
-//     // Find fundraiser and update it with the request body
-//     Fundraiser.findByIdAndUpdate(req.params.fundraiserId, {
+//     // Find donor and update it with the request body
+//     Donor.findByIdAndUpdate(req.params.fundraiserId, {
 //         title: req.body.title || "Untitled Fundraiser",
 //         content: req.body.content
 //     }, {new: true})
@@ -99,22 +127,22 @@ exports.findOne = (req, res) => {
 
 // Delete a fundraiser with the specified fundraiserId in the request
 exports.delete = (req, res) => {
-    Fundraiser.findByIdAndRemove(req.params.fundraiserId)
-    .then(fundraiser => {
-        if(!fundraiser) {
+    Donor.findByIdAndRemove(req.params.fundraiserId)
+    .then(donor => {
+        if(!donor) {
             return res.status(404).send({
-                message: "Fundraiser not found with id " + req.params.fundraiserId
+                message: "Donor not found with id " + req.params.donorId
             });
         }
-        res.send({message: "Fundraiser deleted successfully!"});
+        res.send({message: "Donor deleted successfully!"});
     }).catch(err => {
         if(err.kind === 'ObjectId' || err.name === 'NotFound') {
             return res.status(404).send({
-                message: "Fundraiser not found with id " + req.params.fundraiserId
+                message: "Donor not found with id " + req.params.donorId
             });                
         }
         return res.status(500).send({
-            message: "Could not delete fundraiser with id " + req.params.fundraiserId
+            message: "Could not delete donor with id " + req.params.donorId
         });
     });
 };
