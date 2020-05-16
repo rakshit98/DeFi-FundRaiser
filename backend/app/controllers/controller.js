@@ -4,12 +4,27 @@ const config = require('../../config.js');
 const mongo = require('mongodb').MongoClient
 const passport = require('passport');
 const connectEnsureLogin = require('connect-ensure-login');
+var mongoUtil = require('../../config/mongoUtil.js');
+var db = mongoUtil.getDb();
 
-passport.use(Donor.createStrategy());
-
-passport.serializeUser(Donor.serializeUser());
-passport.deserializeUser(Donor.deserializeUser());
-
+// passport.authenticate('local', { failureRedirect: '/login' }),
+//       function(req, res) {
+//         res.redirect('/');
+//     }
+var Collection = db.collection('donors');
+// // passport.use(Donor.createStrategy());
+// passport.use(new LocalStrategy(
+//   function(username, password, done) {
+//     Collection.findOne({ username: username }, function (err, user) {
+//       if (err) { return done(err); }
+//       if (!user) { return done(null, false); }
+//       if (!user.verifyPassword(password)) { return done(null, false); }
+//       return done(null, user);
+//     });
+//   }
+// ));
+// passport.serializeUser(Donor.serializeUser());
+// passport.deserializeUser(Donor.deserializeUser());
 // Create and Save a new Donor
 exports.signUp = (req, res) => {
     // Validate request
@@ -19,10 +34,17 @@ exports.signUp = (req, res) => {
         });
     }
 
+    if(Collection.count({name:req.body.username}) > 0){
+    	alert('Username already taken!');
+    	res.redirect('/');
+    }
+
+
     // Create a Donor
     const donor = new Donor({
         name: req.body.name || "Noname", 
-        target: req.body.target
+        email: req.body.email,
+        wallet: req.body.wallet
     });
 
     // Save Donor in the database
@@ -60,7 +82,7 @@ exports.login = (req,res,next) => {
 
 // Retrieve and return all donors from the database.
 exports.findAll = (req, res) => {
-    Fundraiser.find()
+    Collection.find()
     .then(donors => {
         res.send(donors);
     }).catch(err => {

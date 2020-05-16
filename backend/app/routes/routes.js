@@ -15,9 +15,19 @@ module.exports = (app) => {
         res.sendFile(path.resolve('frontend/public/ngo-login.html'))
     });
 
-    app.post('/donorlogin',donors.login);
-    // Retrieve all donors
-    app.get('/fundraiser', donors.signUp);
+    app.get('/donorregister',function(req,res){
+        res.sendFile(path.resolve('frontend/public/donor-register.html'))
+    });
+
+    app.get('/ngoregister',function(req,res){
+        res.sendFile(path.resolve('frontend/public/ngo-register.html'))
+    });
+
+    app.post('/donorregister',donors.signUp);
+
+    // app.post('/donorlogin',donors.login);
+    // // Retrieve all donors
+    // app.post('/donorregister',donors.signUp);
 
     // Retrieve a single fundraiser with fundraiserId
     app.get('/fundraiser/:fundraiserId', donors.findOne);

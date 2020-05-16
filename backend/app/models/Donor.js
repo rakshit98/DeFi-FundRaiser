@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DonorSchema = mongoose.Schema({
+const donorSchema = mongoose.Schema({
     name: String,
     email: String,
     wallet: String
@@ -8,4 +8,4 @@ const DonorSchema = mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Donor', DonorSchema);
+module.exports = mongoose.model('Donor', donorSchema);
