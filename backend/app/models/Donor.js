@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const donorSchema = mongoose.Schema({
-    name: String,
-    email: String,
+    username: String,
+    password: String,
     wallet: String
 }, {
     timestamps: true
 });
 
-module.exports = mongoose.model('Donor', donorSchema);
+module.exports = mongoose.model('Donor', donorSchema, 'donors');

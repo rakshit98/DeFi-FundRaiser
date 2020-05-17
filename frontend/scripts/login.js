@@ -57,8 +57,18 @@
 })(jQuery);
 // var OktaSignIn = require('@okta/okta-signin-widget');
 
-const appID = new AppID();
-await appID.init({
- clientId: 'c741ff83-425a-48a6-8a48-6151220a5b4f',
- discoveryEndpoint: 'https://au-syd.appid.cloud.ibm.com/oauth/v4/7414fffb-2c96-4347-9c18-93e1b7749ee1/.well-known/openid-configuration'
-});
+// var donorform = $("#donorregister");
+// var donorbtn = donorform.find('.login100-form-btn');
+
+// var sendDonor = function() {
+//     $.ajax({
+//         url: 'http://localhost:3000/donorregister',
+//         data : {
+//                     name: bed_linen_count,
+//                     no_of_persbathtowel: bath_towel_count,
+//                     no_of_perskitchenlinen: kitchen_linen_count
+//                 },
+//         method: 'POST'
+
+//     })
+// }

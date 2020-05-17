@@ -30,7 +30,7 @@ module.exports = (app) => {
     // app.post('/donorregister',donors.signUp);
 
     // Retrieve a single fundraiser with fundraiserId
-    app.get('/fundraiser/:fundraiserId', donors.findOne);
+    // app.get('/fundraiser/:fundraiserId', donors.findOne);
 
     // Update a fundraiser with fundraiserId
     // app.put('/fundraiser/:fundraiserId', donors.update);
