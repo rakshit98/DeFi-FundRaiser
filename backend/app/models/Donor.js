@@ -1,11 +1,54 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
 
-const donorSchema = mongoose.Schema({
-    username: String,
-    password: String,
-    wallet: String
-}, {
-    timestamps: true
+const DonorSchema = mongoose.Schema({
+    username: {
+    	type:String,
+    	required:true,
+    	unique: true
+    },
+    password: {
+    	type:String,
+    	required: true,
+    },
+    wallet: {
+    	type:String,
+    	required: true,
+    	unique: true
+    }
 });
 
-module.exports = mongoose.model('Donor', donorSchema, 'donors');
+DonorSchema.statics.authenticate = function (username, password, callback) {
+  Donor.findOne({ username: username })
+    .exec(function (err, donor) {
+      if (err) {
+        return callback(err)
+      } else if (!donor) {
+        var err = new Error('User not found.');
+        err.status = 401;
+        return callback(err);
+      }
+      bcrypt.compare(password, donor.password, function (err, result) {
+        if (result === true) {
+          return callback(null, donor);
+        } else {
+          return callback();
+        }
+      })
+    });
+}
+
+//hashing a password before saving it to the database
+DonorSchema.pre('save', function (next) {
+  var donor = this;
+  bcrypt.hash(donor.password, 10, function (err, hash) {
+    if (err) {
+      return next(err);
+    }
+    donor.password = hash;
+    next();
+  })
+});
+
+var Donor = mongoose.model('Donor', DonorSchema);
+module.exports = Donor;

@@ -55,8 +55,6 @@
     
 
 })(jQuery);
-// var OktaSignIn = require('@okta/okta-signin-widget');
-
 // var donorform = $("#donorregister");
 // var donorbtn = donorform.find('.login100-form-btn');
 
