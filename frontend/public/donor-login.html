@@ -3,7 +3,6 @@
 <head>
 	<title>Login V19</title>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="../assets/images/icons/favicon.ico"/>
 <!--===============================================================================================-->
@@ -24,8 +23,8 @@
 <!--===============================================================================================-->	
 	<link rel="stylesheet" type="text/css" href="../vendor/daterangepicker/daterangepicker.css">
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="public/css/util.css">
-	<link rel="stylesheet" type="text/css" href="public/css/main.css">
+	<link rel="stylesheet" type="text/css" href="/public/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/public/css/main.css">
 <!--===============================================================================================-->
 </head>
 <body class="login">
@@ -42,25 +41,25 @@
   	</nav>
 		<div class="container-login100">
 			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
-				<form class="login100-form validate-form" action="http://localhost:3000/donor" method="POST">
+				<form class="login100-form validate-form" action="http://localhost:4000/donor/login" method="POST">
 					<span class="login100-form-title p-b-33">
 						Donor Login
 					</span>
 
 					<div class="wrap-input100 validate-input" id="myinput" data-validate="Username is required">
-						<input class="input100" type="text" name="logusername" placeholder="Username">
+						<input class="input100" type="text" name="username" placeholder="Username">
 						<span class="focus-input100-1"></span>
 						<span class="focus-input100-2"></span>
 					</div>
 
 					<div class="wrap-input100 rs1 validate-input" id="myinput" data-validate="Password is required">
-						<input class="input100" type="password" name="logpassword" placeholder="Password">
+						<input class="input100" type="password" name="password" placeholder="Password">
 						<span class="focus-input100-1"></span>
 						<span class="focus-input100-2"></span>
 					</div>
 
 					<div class="container-login100-form-btn m-t-20">
-						<button class="login100-form-btn">
+						<button class="login100-form-btn" type="submit">
 							Sign in
 						</button>
 					</div>
@@ -80,7 +79,7 @@
 							<a href="#">Create an account?</a>
 						</span>
 
-						<a href="/donorregister" class="txt2 hov1">
+						<a href="/donor/signup" class="txt2 hov1">
 							Sign up
 						</a>
 					</div>

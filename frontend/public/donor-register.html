@@ -26,8 +26,8 @@
 <!--===============================================================================================-->
 	<link href="https://global.oktacdn.com/okta-signin-widget/3.1.3/css/okta-sign-in.min.css" type="text/css" rel="stylesheet"/>
 <!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="public/css/util.css">
-	<link rel="stylesheet" type="text/css" href="public/css/main.css">
+	<link rel="stylesheet" href="/public/css/util.css">
+	<link rel="stylesheet" href="/public/css/main.css">
 <!--===============================================================================================-->
 </head>
 <body class="login">
@@ -35,7 +35,7 @@
     	<div class="nav-wrapper">
       		<a href="/" class="brand-logo">CrowdFund</a>
       		<ul id="nav-mobile" class="right hide-on-med-and-down">
-        		<li><a href="/donorlogin">Donor</a></li>
+        		<li><a href="/donor/login">Donor</a></li>
         		<li><a href="/ngologin">NGO</a></li>
         		<li><a href="/"></a></li>
       		</ul>
@@ -43,7 +43,7 @@
   	</nav>
 	<div class="container-login100">
 		<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-50">
-			<form class="login100-form validate-form" action="http://localhost:3000/donor" method="POST">
+			<form class="login100-form validate-form" action="http://localhost:4000/donor/signup" method="POST">
 				<span class="login100-form-title p-b-33">
 					Donor Registration
 				</span>
@@ -53,14 +53,13 @@
 					<span class="focus-input100-1"></span>
 					<span class="focus-input100-2"></span>
 				</div>
-
-				<div class="wrap-input100 rs1 validate-input" id="myinput" data-validate="Password is required">
-					<input class="input100" type="password" name="password" placeholder="Password">
+				<div class="wrap-input100 rs1 validate-input" id="myinput" data-validate="Wallet is required">
+					<input class="input100" type="text" name="wallet" placeholder="Wallet Address">
 					<span class="focus-input100-1"></span>
 					<span class="focus-input100-2"></span>
 				</div>
-				<div class="wrap-input100 rs1 validate-input" id="myinput" data-validate="Wallet is required">
-					<input class="input100" type="text" name="wallet" placeholder="Wallet Address">
+				<div class="wrap-input100 rs1 validate-input" id="myinput" data-validate="Password is required">
+					<input class="input100" type="password" name="password" placeholder="Password">
 					<span class="focus-input100-1"></span>
 					<span class="focus-input100-2"></span>
 				</div>
