@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const NgoSchema = mongoose.Schema({
+const FundRaiserSchema = mongoose.Schema({
   index: {
     type: Number,
     required: true
@@ -13,9 +13,13 @@ const NgoSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  password: {
-    type: String,
+  owner: {
+    type: Number,
     required: true
+  },
+  target: {
+      type: Number,
+      required: true
   },
   createdAt: {
     type: Date,
@@ -24,4 +28,4 @@ const NgoSchema = mongoose.Schema({
 });
 
 // export model user with UserSchema
-module.exports = mongoose.model("ngo", NgoSchema);
+module.exports = mongoose.model("fundraiser", FundRaiserSchema);
