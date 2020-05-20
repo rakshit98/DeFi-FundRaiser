@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const NgoSchema = mongoose.Schema({
+  index: {
+    type: Number,
+    required: true
+  },
   name: {
     type: String,
     required: true
