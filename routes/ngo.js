@@ -7,7 +7,7 @@ const auth = require("../middleware/auth");
 const path = require('path');
 var tokenn;
 
-const User = require("../model/User");
+const Ngo = require("../model/Ngo");
 
 /**
  * @method - POST
@@ -15,23 +15,24 @@ const User = require("../model/User");
  * @description - User SignUp
  */
 
-router.get('/donor/login',function(req,res){
-        res.sendFile(path.resolve('frontend/public/donor-login.html'))
-    });
 
-router.get('/donor/signup',function(req,res){
-    res.sendFile(path.resolve('frontend/public/donor-register.html'))
+router.get('/ngo/login',function(req,res){
+    res.sendFile(path.resolve('frontend/public/ngo-login.html'))
 });
 
-router.get('/donorhome',function(req,res){
-    res.sendFile(path.resolve('frontend/public/donor-home.html'))
+router.get('/ngo/signup',function(req,res){
+    res.sendFile(path.resolve('frontend/public/ngo-register.html'))
+});
+
+router.get('/ngohome',function(req,res){
+    res.sendFile(path.resolve('frontend/public/ngo-home.html'))
 });
 
 
 router.post(
-  "/donor/signup",
+  "/ngo/signup",
   [
-    check("username", "Please Enter a Valid Username")
+    check("name", "Please Enter a Valid Username")
       .not()
       .isEmpty(),
     check("password", "Please enter a valid password").isLength({
@@ -46,36 +47,36 @@ router.post(
       });
     }
 
-    const { username, wallet, password } = req.body;
+    const { name, wallet, password } = req.body;
     // if(!web3.utils.isAddress(wallet)){
     //   return res.status(400).json({
     //     errors: "Invalid wallet address"
     //   });
     // }
     try {
-      let user = await User.findOne({
-        username
+      let ngo = await Ngo.findOne({
+        name
       });
-      if (user) {
+      if (ngo) {
         return res.status(400).json({
-          msg: "User Already Exists"
+          msg: "ngo Already Exists"
         });
       }
 
-      user = new User({
-        username,
+      ngo = new Ngo({
+        name,
         wallet,
         password
       });
-
+      console.log(ngo);
       const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
+      ngo.password = await bcrypt.hash(password, salt);
 
-      await user.save();
+      await ngo.save();
 
       const payload = {
-        user: {
-          id: user.id
+        ngo: {
+          id: ngo.id
         }
       };
 
@@ -89,7 +90,7 @@ router.post(
           if (err) throw err;
           tokenn = token
           console.log(tokenn);
-          res.redirect("http://localhost:4000/donor/login");
+          res.redirect("http://localhost:4000/ngo/login");
         }
       );
     } catch (err) {
@@ -100,9 +101,9 @@ router.post(
 );
 
 router.post(
-  "/donor/login",
+  "/ngo/login",
   [
-    check("username", "Please Enter a Valid Username")
+    check("name", "Please Enter a Valid Username")
       .not()
       .isEmpty(),
     check("password", "Please enter a valid password").isLength({
@@ -118,25 +119,25 @@ router.post(
       });
     }
 
-    const { username, password } = req.body;
+    const { name, password } = req.body;
     try {
-      let user = await User.findOne({
-        username
+      let ngo = await Ngo.findOne({
+        name
       });
-      if (!user)
+      if (!ngo)
         return res.status(400).json({
-          message: "User Not Exist"
+          message: "NGO does not Exist"
         });
 
-      const isMatch = await bcrypt.compare(password, user.password);
+      const isMatch = await bcrypt.compare(password, ngo.password);
       if (!isMatch)
         return res.status(400).json({
           message: "Incorrect Password !"
         });
 
       const payload = {
-        user: {
-          id: user.id
+        ngo: {
+          id: ngo.id
         }
       };
 
@@ -150,8 +151,7 @@ router.post(
           if (err) throw err;
           tokenn = token
           console.log(tokenn);
-          res.send("OK");
-          // res.redirect("http://localhost:4000/donor/home");
+          res.redirect("http://localhost:4000/ngohome");
         }
       );
     } catch (e) {
@@ -166,17 +166,17 @@ router.post(
 /**
  * @method - POST
  * @description - Get LoggedIn User
- * @param - /user/me
+ * @param - /ngo/me
  */
 
-router.get("/me", auth, async (req, res) => {
-  try {
-    // request.user is getting fetched from Middleware after token authentication
-    const user = await User.findById(req.user.id);
-    res.json(user);
-  } catch (e) {
-    res.send({ message: "Error in Fetching user" });
-  }
-});
+// router.get("/me", auth, async (req, res) => {
+//   try {
+//     // request.user is getting fetched from Middleware after token authentication
+//     const user = await User.findById(req.user.id);
+//     res.json(user);
+//   } catch (e) {
+//     res.send({ message: "Error in Fetching user" });
+//   }
+// });
 
 module.exports = router;
