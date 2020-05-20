@@ -69,10 +69,26 @@ router.post(
         wallet: "0x4a3f2c1e48Ffb4A95417354921ede30C08781d23"	//Autoincrement index pick from backend
       })
       .then(function (response) {
-        console.log(response.data);
+        console.log(data);
         if (!response.data.success){
           process.exit(0);
         }
+
+        if (data.type == 'event' && data.event_name == 'SignUp'){
+          console.log('New Account created Successfully', response.data);
+          let index = response.data.event_data["index"];
+          user = new User({ 
+                index,
+                username,
+                wallet,
+                password
+          });
+        }
+  
+        const salt = bcrypt.genSalt(10);
+        user.password = bcrypt.hash(password, salt);
+  
+        user.save();
       })
       .catch(function (error) {
         if (error.response.data){
@@ -85,23 +101,6 @@ router.post(
         }
         process.exit(0);
       });
-
-
-      if (data.type == 'event' && data.event_name == 'SignUp'){
-        console.log('New Account created Successfully', data);
-        let index = data.event_data["index"];
-        user = new User({ 
-              index,
-              username,
-              wallet,
-              password
-        });
-      }
-
-      const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(password, salt);
-
-      await user.save();
 
     } catch (err) {
       console.log(err.message);
