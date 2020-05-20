@@ -1,20 +1,20 @@
 const mongoose = require("mongoose");
 
-const NgoSchema = mongoose.Schema({
-  index: {
+const TransactionSchema = mongoose.Schema({
+  sender: {
     type: Number,
     required: true
   },
-  name: {
-    type: String,
+  recipient: {
+    type: Number,
     required: true
   },
-  wallet: {
-    type: String,
+  amount: {
+    type: Number,
     required: true
   },
-  password: {
-    type: String,
+  status: {
+    type: Number,
     required: true
   },
   createdAt: {
@@ -24,4 +24,4 @@ const NgoSchema = mongoose.Schema({
 });
 
 // export model user with UserSchema
-module.exports = mongoose.model("ngo", NgoSchema);
+module.exports = mongoose.model("transaction", TransactionSchema);

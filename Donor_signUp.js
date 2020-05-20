@@ -1,6 +1,6 @@
 const axios = require('axios');
 const WebSocket = require('ws');
-const config = require('./config.js');
+const config = require('./config/config.js');
 const mongo = require('mongodb').MongoClient
 const url = 'mongodb://localhost:27017'
 
