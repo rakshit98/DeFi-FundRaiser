@@ -4,7 +4,7 @@ const Userroutes = require("./routes/user");
 const Ngoroutes = require("./routes/ngo");
 const InitiateMongoServer = require("./config/db");
 const path = require('path');
-
+const ws = require('./config/ws');
 // Initiate Mongo Server
 InitiateMongoServer();
 
