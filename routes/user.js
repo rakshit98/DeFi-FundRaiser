@@ -6,7 +6,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const path = require('path');
 const wsk = require('../config/ws');
-
+const logg = require('../globals/globals');
 const User = require("../model/User");
 const Transaction = require("../model/Transaction");
 /**
@@ -144,8 +144,8 @@ router.post(
         return res.status(400).json({
           message: "Incorrect Password !"
         });
-      
-      res.send("OK");
+      logg.loggedinDonor = username;
+      res.redirect("http://localhost:4000/donorhome");
     } catch (e) {
       console.error(e);
       res.status(500).json({

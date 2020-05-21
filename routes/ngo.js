@@ -6,7 +6,7 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const path = require('path');
 const wsk = require('../config/ws');
-
+const logg = require('../globals/globals');
 const Ngo = require("../model/Ngo");
 
 /**
@@ -146,6 +146,7 @@ router.post(
         return res.status(400).json({
           message: "Incorrect Password !"
         });
+      logg.loggedinNgo = name;
       res.redirect("http://localhost:4000/ngo/home");
     } catch (e) {
       console.error(e);
