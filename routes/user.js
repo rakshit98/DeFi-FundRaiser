@@ -8,7 +8,7 @@ const path = require('path');
 const wsk = require('../config/ws');
 
 const User = require("../model/User");
-
+const Transaction = require("../model/Transaction");
 /**
  * @method - POST
  * @param - /signup
@@ -171,4 +171,127 @@ router.get("/me", auth, async (req, res) => {
   }
 });
 
+  router.post("/donorhome/donate" , async(req,res) =>{
+
+    const {fund_id, donor, amount} = req.body;
+    var trans_amount;
+    try {
+      
+      wsk.Instance.post('/donor_to_fundraiser', {
+        donor_id : donor,
+        fundraiser_id: fund_id,
+        amount: amount
+      })
+      .then(function(response) {
+        console.log(response.data)
+        if(!response.data.success){
+          process.exit(0);
+        }
+      })
+      .catch(function(error){
+        if (error.response.data){
+          console.log(error.response.data);
+          if (error.response.data.error == 'unknown contract'){
+            console.error('You filled in the wrong contract address!');
+          }
+        } else {
+          console.log(error.response);
+        }
+        process.exit(0);
+      });
+
+      wsk.ws.on('message', function incoming(data){
+        data = JSON.parse(data);
+
+        if(data.type == 'event' && data.event_name == 'Transfer'){
+          console.log('Amount Transferred');
+          transaction = new Transaction({
+            sender: donor,
+            recipient: fund_id,
+            amount: amount,
+            status: 0
+          });
+
+        transaction.save();
+
+        wsk.Instance.post('/milestone', {
+          fundraiser_id: fund_id, //Input from FrontEnd
+          amount: amount	
+        })
+        .then(function (response) {
+          console.log(response.data);
+          if (!response.data.success){
+            process.exit(0);
+          }
+        })
+        .catch(function (error) {
+          if (error.response.data){
+            console.log(error.response.data);
+            if (error.response.data.error == 'unknown contract'){
+              console.error('You filled in the wrong contract address!');
+            }
+          } else {
+            console.log(error.response);
+          }
+          process.exit(0);
+        });
+
+        if(data.event_type == 'event' && data.event_name == 'Milestone'){
+
+          Transaction.aggregate([
+            { $match: { status : 0}},
+            {
+              $group:
+              {
+                _id : '$recipient',
+                total: { $sum: '$amount'}
+              }
+            },
+            { $match: {_id: donor}}
+            ])
+            .then(function (res){
+                trans_amount = res[0].total;
+            });
+
+          Transaction.update(
+            {"$and" : [{recipient: fund_id}, {status: 0}]},
+            {
+              $set:
+                {status : 1}
+            },
+            {multi: true}
+          );
+
+          wsk.Instance.post('/transfer', {
+            fundraiser_id: fund_id, //Input from FrontEnd
+            amount: transfer_amount	
+          })
+          .then(function (response) {
+            console.log(response.data);
+            if (!response.data.success){
+              process.exit(0);
+            }
+          })
+          .catch(function (error) {
+            if (error.response.data){
+              console.log(error.response.data);
+              if (error.response.data.error == 'unknown contract'){
+                console.error('You filled in the wrong contract address!');
+              }
+            } else {
+              console.log(error.response);
+            }
+            process.exit(0);
+          });
+        }
+      } 
+		});
+    } catch(e) {
+      console.error(e);
+      res.status(500).json({
+        message: 'Something went wrong.' 
+      });
+    }
+
+  });
 module.exports = router;

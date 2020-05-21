@@ -17,7 +17,7 @@ struct NGO { //NGO Account
 	uint256 ngo_id;
 	string ngo_name;
 	address ngo_wallet;
-	mapping(uint256 => uint256) fundraiser;
+	uint256[5] fundraisers;
 }
 
 struct FundRaiser { //Fundraiser Account
@@ -49,7 +49,11 @@ function donor_signup(string memory name, address wallet) public{
 
 function ngo_signup(string memory ngo_name, address wallet) public {
 	uint256 index = NGO_Account.length;
-	NGO memory create = NGO(index+1,ngo_name,wallet);
+	uint256[5] memory f;
+	for(uint256 i=0;i<5;i++){
+	    f[i] = 0;
+	}
+	NGO memory create = NGO(index+1,ngo_name,wallet,f);
 	NGO_Account.push(create);
 
 	emit SignUp("Account Created",index+1,NGO_Account[index].ngo_name);
@@ -60,8 +64,12 @@ function create_fundraiser(string memory fundraiser_name,uint256 fundraiser_targ
 	FundRaiser memory create = FundRaiser(index+1,fundraiser_name,0,fundraiser_target,wallet,0);
 	Fundraiser_Account.push(create);
 	_owners[index+1] = owner;
-	//NGO_Account[owner].fundraiser[owner] = index+1;
-
+	for(uint256 i=0;i<5;i++){
+	    if(NGO_Account[owner-1].fundraisers[i] == 0){
+	        NGO_Account[owner-1].fundraisers[i] = index+1;
+	        break;
+	    }
+	}
 	emit Fundraiser("Fundraiser Started",Fundraiser_Account[index].fundraiser_id,Fundraiser_Account[index].fundraiser_name,Fundraiser_Account[index].fundraiser_target);
 }
 
@@ -127,6 +135,7 @@ function transfer(uint256 fundraiser_id,uint256 amount) public {
 
 function donor_to_fundraiser(uint256 donor_id, uint256 fundraiser_id, uint256 amount) public {
 	assert(Fundraiser_Account[fundraiser_id-1].fundraiser_wallet != address(0));
+	assert(_balance[Donor_Account[donor_id-1].wallet] > amount);
 	_balance[Donor_Account[donor_id-1].wallet] -= amount;
 	_balance[Fundraiser_Account[fundraiser_id-1].fundraiser_wallet] += amount;
 	emit Transfer("Amount Transferred",donor_id,fundraiser_id,amount);
@@ -142,5 +151,9 @@ function withdraw(uint256 donor_id,uint256 fundraiser_id,uint256 amount) public{
 	_balance[Donor_Account[donor_id-1].wallet] += amount;
 
 	emit Transfer("Amount Transferred",fundraiser_id, donor_id, amount);
+}
+
+function fetch_fundraiser(uint256 ngo_id) public view returns (uint256[5] memory) {
+    return NGO_Account[ngo_id-1].fundraisers;
 }
 }
