@@ -73,22 +73,6 @@ router.post(
         if (!response.data.success){
           process.exit(0);
         }
-
-        if (data.type == 'event' && data.event_name == 'SignUp'){
-          console.log('New Account created Successfully', response.data);
-          let index = response.data.event_data["index"];
-          user = new User({ 
-                index,
-                username,
-                wallet,
-                password
-          });
-        }
-  
-        const salt = bcrypt.genSalt(10);
-        user.password = bcrypt.hash(password, salt);
-  
-        user.save();
       })
       .catch(function (error) {
         if (error.response.data){
@@ -101,6 +85,22 @@ router.post(
         }
         process.exit(0);
       });
+
+      if (data.type == 'event' && data.event_name == 'SignUp'){
+        console.log('New Account created Successfully', response.data);
+        let index = response.data.event_data["index"];
+        user = new User({ 
+              index,
+              username,
+              wallet,
+              password
+        });
+      }
+
+      const salt = bcrypt.genSalt(10);
+      user.password = bcrypt.hash(password, salt);
+
+      user.save();
 
     } catch (err) {
       console.log(err.message);
