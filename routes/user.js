@@ -9,6 +9,8 @@ const wsk = require('../config/ws');
 const logg = require('../globals/globals');
 const User = require("../model/User");
 const Transaction = require("../model/Transaction");
+const Fundraiser = require("../model/Fundraiser");
+
 /**
  * @method - POST
  * @param - /signup
@@ -161,11 +163,12 @@ router.post(
  * @param - /user/me
  */
 
-router.get("/me", auth, async (req, res) => {
+router.get("/donorhome", async (req, res) => {
   try {
-    // request.user is getting fetched from Middleware after token authentication
-    const user = await User.findById(req.user.id);
-    res.json(user);
+
+    const funds = await Fundraiser.find();
+    return res.json(funds);
+
   } catch (e) {
     res.send({ message: "Error in Fetching user" });
   }

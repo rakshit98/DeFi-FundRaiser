@@ -8,6 +8,7 @@ const path = require('path');
 const wsk = require('../config/ws');
 const logg = require('../globals/globals');
 const Ngo = require("../model/Ngo");
+const Fundraiser = require("../model/Fundraiser");
 
 /**
  * @method - POST
@@ -157,6 +158,41 @@ router.post(
   }
 );
 
+router.get('/ngo/home',async(req,res)=> {
+
+    var ngoName;
+    if(logg.loggedinNgo){
+      ngoName = logg.loggedinNgo; 
+    }
+
+    try{
+        
+      let ngo = await Ngo.findOne({
+          name: ngoName
+        });
+      
+        if(!ngo){
+          return res.status(400).json({
+            message: "Somethings Wrong. Please login Again."
+          });
+        }
+
+        let fund = await Fundraiser.find({
+          owner: ngo.index
+        });
+
+        if(!fund){
+          res.send("No Fundraisers Started.");
+        }
+        //Fundraisers under this NGO  
+        return res.json(fund);
+    } catch(e){
+      console.error(e);
+      return res.status(500).json({
+        message: "Server Error."
+      });
+    }
+});
 /**
  * @method - POST
  * @description - Get LoggedIn User
