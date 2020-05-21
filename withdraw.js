@@ -33,8 +33,10 @@ mongo.connect(url, {
   		const db = client.db('FundRaiser');
 		
 		db.collection("Donor_Transactions").findOneAndUpdate(
-			{ "$and" :[{sender: 1},{recipient: 2}, {status: 0},{amount: 29}]},
-			{ $set: {status: 3}}
+			{ "$and" :[{sender: donor},{recipient: fund_id}, {status: 0},{amount: amount}]},
+			{ 
+				$set: {status: 3}
+			}
 			);
 
 
@@ -57,9 +59,9 @@ ws.on('message', function incoming(data) {
 		wsSessionID = data.sessionID;
 
 		NGOInstance.post('/withdraw', {
-			donor_id: 1, //Input from FrontEnd
-			fundraiser_id: 2,
-			amount : 29 //FrontEnd Input
+			donor_id: donor, //Input from FrontEnd
+			fundraiser_id: fund_id,
+			amount : amount //FrontEnd Input
 		})
 		.then(function (response) {
 			console.log(response.data);
