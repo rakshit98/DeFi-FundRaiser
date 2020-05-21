@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const path = require('path');
-const ws = require('../config/ws');
+const wsk = require('../config/ws');
 var tokenn;
 
 const User = require("../model/User");
@@ -63,13 +63,13 @@ router.post(
         });
       }
 
-      ws.Instance.post('/donor_signup', {
+      wsk.Instance.post('/donor_signup', {
         name: "Rakshit", //Input from FrontEnd
         email: "rakshit.mit@gmail.com", //FrontEnd Input
         wallet: "0x4a3f2c1e48Ffb4A95417354921ede30C08781d23"	//Autoincrement index pick from backend
       })
       .then(function (response) {
-        console.log(data);
+        console.log(response.data);
         if (!response.data.success){
           process.exit(0);
         }
@@ -85,23 +85,26 @@ router.post(
         }
         process.exit(0);
       });
-
+      wsk.ws.on('message', function incoming(data) {
+           data = JSON.parse(data);
       if (data.type == 'event' && data.event_name == 'SignUp'){
-        console.log('New Account created Successfully', response.data);
-        let index = response.data.event_data["index"];
+        console.log('New Account created Successfully', data);
+        let index = data.event_data["index"];
         user = new User({ 
               index,
               username,
               wallet,
               password
         });
-      }
-
-      const salt = bcrypt.genSalt(10);
+        /*
+      const salt =  bcrypt.genSalt(10);
       user.password = bcrypt.hash(password, salt);
-
+      */
+      console.log(user);
       user.save();
-
+      res.redirect("http://localhost:4000/donor/login");
+    }
+    });
     } catch (err) {
       console.log(err.message);
       res.status(500).send("Error in Saving");
@@ -138,32 +141,13 @@ router.post(
           message: "User Not Exist"
         });
 
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch)
+      
+      if (user.password != password)
         return res.status(400).json({
           message: "Incorrect Password !"
         });
-
-      const payload = {
-        user: {
-          id: user.id
-        }
-      };
-
-      jwt.sign(
-        payload,
-        "randomString",
-        {
-          expiresIn: 3600
-        },
-        (err, token) => {
-          if (err) throw err;
-          tokenn = token
-          console.log(tokenn);
-          res.send("OK");
-          // res.redirect("http://localhost:4000/donor/home");
-        }
-      );
+      
+      res.send("OK");
     } catch (e) {
       console.error(e);
       res.status(500).json({
