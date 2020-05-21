@@ -64,7 +64,6 @@ router.post(
 
       wsk.Instance.post('/donor_signup', {
         name: username, //Input from FrontEnd
-        email: "rakshit.mit@gmail.com", //FrontEnd Input
         wallet: wallet	//Autoincrement index pick from backend
       })
       .then(function (response) {
