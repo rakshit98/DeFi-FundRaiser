@@ -17,7 +17,6 @@ struct NGO { //NGO Account
 	uint256 ngo_id;
 	string ngo_name;
 	address ngo_wallet;
-	uint256[5] fundraisers;
 }
 
 struct FundRaiser { //Fundraiser Account
@@ -49,11 +48,7 @@ function donor_signup(string memory name, address wallet) public{
 
 function ngo_signup(string memory ngo_name, address wallet) public {
 	uint256 index = NGO_Account.length;
-	uint256[5] memory f;
-	for(uint256 i=0;i<5;i++){
-	    f[i] = 0;
-	}
-	NGO memory create = NGO(index+1,ngo_name,wallet,f);
+	NGO memory create = NGO(index+1,ngo_name,wallet);
 	NGO_Account.push(create);
 
 	emit SignUp("Account Created",index+1,NGO_Account[index].ngo_name);
@@ -64,12 +59,6 @@ function create_fundraiser(string memory fundraiser_name,uint256 fundraiser_targ
 	FundRaiser memory create = FundRaiser(index+1,fundraiser_name,0,fundraiser_target,wallet,0);
 	Fundraiser_Account.push(create);
 	_owners[index+1] = owner;
-	for(uint256 i=0;i<5;i++){
-	    if(NGO_Account[owner-1].fundraisers[i] == 0){
-	        NGO_Account[owner-1].fundraisers[i] = index+1;
-	        break;
-	    }
-	}
 	emit Fundraiser("Fundraiser Started",Fundraiser_Account[index].fundraiser_id,Fundraiser_Account[index].fundraiser_name,Fundraiser_Account[index].fundraiser_target);
 }
 
@@ -151,9 +140,5 @@ function withdraw(uint256 donor_id,uint256 fundraiser_id,uint256 amount) public{
 	_balance[Donor_Account[donor_id-1].wallet] += amount;
 
 	emit Transfer("Amount Transferred",fundraiser_id, donor_id, amount);
-}
-
-function fetch_fundraiser(uint256 ngo_id) public view returns (uint256[5] memory) {
-    return NGO_Account[ngo_id-1].fundraisers;
 }
 }
