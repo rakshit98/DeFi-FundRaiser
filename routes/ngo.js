@@ -24,7 +24,7 @@ router.get('/ngo/signup',function(req,res){
     res.sendFile(path.resolve('frontend/public/ngo-register.html'))
 });
 
-router.get('/ngohome',function(req,res){
+router.get('/ngo/home',function(req,res){
     res.sendFile(path.resolve('frontend/public/ngo-home.html'))
 });
 
@@ -146,7 +146,7 @@ router.post(
         return res.status(400).json({
           message: "Incorrect Password !"
         });
-      res.redirect("http://localhost:4000/ngohome");
+      res.redirect("http://localhost:4000/ngo/home");
     } catch (e) {
       console.error(e);
       res.status(500).json({
