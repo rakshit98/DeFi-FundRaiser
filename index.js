@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const Userroutes = require("./routes/user");
 const Ngoroutes = require("./routes/ngo");
+const Fundraiserroutes = require("./routes/fundraiser");
 const InitiateMongoServer = require("./config/db");
 const path = require('path');
 // Initiate Mongo Server
@@ -24,6 +25,7 @@ app.use(express.json());
  */
 app.use('/', Userroutes);
 app.use('/', Ngoroutes);
+app.use('/', Fundraiserroutes);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname + '/frontend/public/landing.html'));
