@@ -17,7 +17,6 @@ struct NGO { //NGO Account
 	uint256 ngo_id;
 	string ngo_name;
 	address ngo_wallet;
-	mapping(uint256 => uint256) fundraiser;
 }
 
 struct FundRaiser { //Fundraiser Account
@@ -60,8 +59,6 @@ function create_fundraiser(string memory fundraiser_name,uint256 fundraiser_targ
 	FundRaiser memory create = FundRaiser(index+1,fundraiser_name,0,fundraiser_target,wallet,0);
 	Fundraiser_Account.push(create);
 	_owners[index+1] = owner;
-	//NGO_Account[owner].fundraiser[owner] = index+1;
-
 	emit Fundraiser("Fundraiser Started",Fundraiser_Account[index].fundraiser_id,Fundraiser_Account[index].fundraiser_name,Fundraiser_Account[index].fundraiser_target);
 }
 
@@ -127,6 +124,7 @@ function transfer(uint256 fundraiser_id,uint256 amount) public {
 
 function donor_to_fundraiser(uint256 donor_id, uint256 fundraiser_id, uint256 amount) public {
 	assert(Fundraiser_Account[fundraiser_id-1].fundraiser_wallet != address(0));
+	assert(_balance[Donor_Account[donor_id-1].wallet] > amount);
 	_balance[Donor_Account[donor_id-1].wallet] -= amount;
 	_balance[Fundraiser_Account[fundraiser_id-1].fundraiser_wallet] += amount;
 	emit Transfer("Amount Transferred",donor_id,fundraiser_id,amount);
