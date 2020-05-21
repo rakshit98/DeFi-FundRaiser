@@ -4,7 +4,7 @@ contract DonorBox {
 
 mapping (address => uint) _balance;
 
-mapping (uint256 => uint256) _owners; //Fundraiser to NGO 
+mapping (uint256 => uint256) _owners; //Fundraiser to NGO
 
 event Milestone(string milestone, uint256 amount);
 event Target(string milestone);
@@ -33,19 +33,18 @@ struct FundRaiser { //Fundraiser Account
 struct Donor{
 	uint256 donor_id;
 	string name;
-	string email;
 	address wallet;
 }
 
 NGO[] private NGO_Account;
-FundRaiser[] private Fundraiser_Account; 
+FundRaiser[] private Fundraiser_Account;
 Donor[] private Donor_Account;
 
-function donor_signup(string memory name,string memory email, address wallet) public{
+function donor_signup(string memory name, address wallet) public{
 	uint256 index = Donor_Account.length;
-	Donor memory create = Donor(index+1,name,email,wallet);
+	Donor memory create = Donor(index+1,name,wallet);
 	Donor_Account.push(create);
-	emit SignUp("Donor Account Created", index+1,Donor_Account[index].email);
+	emit SignUp("Donor Account Created", index+1,Donor_Account[index].name);
 }
 
 function ngo_signup(string memory ngo_name, address wallet) public {
@@ -56,12 +55,12 @@ function ngo_signup(string memory ngo_name, address wallet) public {
 	emit SignUp("Account Created",index+1,NGO_Account[index].ngo_name);
 }
 
-function create_fundraiser(string memory fundraiser_name , uint256 fundraiser_target, uint256 owner, address wallet) public {
+function create_fundraiser(string memory fundraiser_name,uint256 fundraiser_target, uint256 owner, address wallet) public {
 	uint256 index = Fundraiser_Account.length;
-	FundRaiser memory create =  FundRaiser(index+1,fundraiser_name,0,fundraiser_target,wallet,0);
+	FundRaiser memory create = FundRaiser(index+1,fundraiser_name,0,fundraiser_target,wallet,0);
 	Fundraiser_Account.push(create);
 	_owners[index+1] = owner;
-	//NGO_Account[owner].fundraiser[owner] = index+1;	
+	//NGO_Account[owner].fundraiser[owner] = index+1;
 
 	emit Fundraiser("Fundraiser Started",Fundraiser_Account[index].fundraiser_id,Fundraiser_Account[index].fundraiser_name,Fundraiser_Account[index].fundraiser_target);
 }
@@ -69,7 +68,6 @@ function create_fundraiser(string memory fundraiser_name , uint256 fundraiser_ta
 function milestone (uint256 fundraiser_id, uint256 amount) public{
 
 		Fundraiser_Account[fundraiser_id-1].fund += amount;
-		
 		if(Fundraiser_Account[fundraiser_id-1].fund < Fundraiser_Account[fundraiser_id-1].fundraiser_target/3)
 			return;
 
@@ -99,7 +97,6 @@ function milestone (uint256 fundraiser_id, uint256 amount) public{
 			*/
 
 			emit Milestone("Target reached", Fundraiser_Account[fundraiser_id-1].fund - Fundraiser_Account[fundraiser_id-1].fundraiser_target*2/3);
-			
 		}
 
 		else if(Fundraiser_Account[fundraiser_id-1].last_thresh == 3)
@@ -129,13 +126,10 @@ function transfer(uint256 fundraiser_id,uint256 amount) public {
 }
 
 function donor_to_fundraiser(uint256 donor_id, uint256 fundraiser_id, uint256 amount) public {
-	
 	assert(Fundraiser_Account[fundraiser_id-1].fundraiser_wallet != address(0));
-	
 	_balance[Donor_Account[donor_id-1].wallet] -= amount;
 	_balance[Fundraiser_Account[fundraiser_id-1].fundraiser_wallet] += amount;
-
-	emit Transfer("Amount Transferred" ,donor_id ,fundraiser_id, amount);
+	emit Transfer("Amount Transferred",donor_id,fundraiser_id,amount);
 }
 
 function mint(uint256 donor_id,uint256 money) public {
