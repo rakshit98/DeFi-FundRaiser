@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const path = require('path');
-var tokenn;
+const wsk = require('../config/ws');
 
 const Ngo = require("../model/Ngo");
 
@@ -59,40 +59,52 @@ router.post(
       });
       if (ngo) {
         return res.status(400).json({
-          msg: "ngo Already Exists"
+          msg: "NGO Already Exists"
         });
       }
 
-      ngo = new Ngo({
-        name,
-        wallet,
-        password
+      wsk.Instance.post('/ngo_signup', {
+        ngo_name: name, //Input from FrontEnd
+        wallet: wallet	//Autoincrement index pick from backend
+      })
+      .then(function (response) {
+        console.log(response.data);
+        if (!response.data.success){
+          process.exit(0);
+        }
+      })
+      .catch(function (error) {
+        if (error.response.data){
+          console.log(error.response.data);
+          if (error.response.data.error == 'unknown contract'){
+            console.error('You filled in the wrong contract address!');
+          }
+        } else {
+          console.log(error.response);
+        }
+        process.exit(0);
       });
-      console.log(ngo);
+
+      wsk.ws.on('message', function incoming(data) {
+           data = JSON.parse(data);
+      if (data.type == 'event' && data.event_name == 'SignUp'){
+        console.log('NGO Account created Successfully', data);
+        let index = data.event_data["index"];
+        ngo = new Ngo({ 
+              index,
+              name,
+              wallet,
+              password
+        });
+        /*
       const salt = await bcrypt.genSalt(10);
-      ngo.password = await bcrypt.hash(password, salt);
-
-      await ngo.save();
-
-      const payload = {
-        ngo: {
-          id: ngo.id
-        }
-      };
-
-      jwt.sign(
-        payload,
-        "randomString",
-        {
-          expiresIn: 10000
-        },
-        (err, token) => {
-          if (err) throw err;
-          tokenn = token
-          console.log(tokenn);
-          res.redirect("http://localhost:4000/ngo/login");
-        }
-      );
+      user.password = await bcrypt.hash(password, salt);
+      */
+      console.log(ngo);
+      ngo.save();
+      res.redirect("http://localhost:4000/ngo/login");
+    }
+    });
     } catch (err) {
       console.log(err.message);
       res.status(500).send("Error in Saving");
@@ -129,31 +141,12 @@ router.post(
           message: "NGO does not Exist"
         });
 
-      const isMatch = await bcrypt.compare(password, ngo.password);
-      if (!isMatch)
+      //const isMatch = await bcrypt.compare(password, ngo.password);
+      if (ngo.password != password)
         return res.status(400).json({
           message: "Incorrect Password !"
         });
-
-      const payload = {
-        ngo: {
-          id: ngo.id
-        }
-      };
-
-      jwt.sign(
-        payload,
-        "randomString",
-        {
-          expiresIn: 3600
-        },
-        (err, token) => {
-          if (err) throw err;
-          tokenn = token
-          console.log(tokenn);
-          res.redirect("http://localhost:4000/ngohome");
-        }
-      );
+      res.redirect("http://localhost:4000/ngohome");
     } catch (e) {
       console.error(e);
       res.status(500).json({

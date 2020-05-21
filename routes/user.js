@@ -6,7 +6,6 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const path = require('path');
 const wsk = require('../config/ws');
-var tokenn;
 
 const User = require("../model/User");
 
@@ -64,9 +63,9 @@ router.post(
       }
 
       wsk.Instance.post('/donor_signup', {
-        name: "Rakshit", //Input from FrontEnd
+        name: username, //Input from FrontEnd
         email: "rakshit.mit@gmail.com", //FrontEnd Input
-        wallet: "0x4a3f2c1e48Ffb4A95417354921ede30C08781d23"	//Autoincrement index pick from backend
+        wallet: wallet	//Autoincrement index pick from backend
       })
       .then(function (response) {
         console.log(response.data);
@@ -97,8 +96,8 @@ router.post(
               password
         });
         /*
-      const salt =  bcrypt.genSalt(10);
-      user.password = bcrypt.hash(password, salt);
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
       */
       console.log(user);
       user.save();
