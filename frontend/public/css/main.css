@@ -56,7 +56,10 @@ nav ul a{
   top: 50px;
   width: 50px;
   height: 20px;
-  background-color: ;
+  background-color: #4272d7;
+  color: white;
+  text-align: center;
+  border-radius: 35%;
 }
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
