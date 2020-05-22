@@ -182,7 +182,7 @@ router.get("/donor/logout", async(req,res) => {
 });
 
 
-router.get("/donorhome", async (req, res) => {
+router.get("/donorhome/fundraiser", async (req, res) => {
   try {
 
     const funds = await Fundraiser.find();

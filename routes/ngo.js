@@ -158,7 +158,7 @@ router.post(
   }
 );
 
-router.get('/ngo/home',async(req,res)=> {
+router.get('/ngo/fundraiser',async(req,res)=> {
 
     var ngoName;
     if(logg.loggedinNgo){
