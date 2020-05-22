@@ -193,6 +193,25 @@ router.get('/ngo/home',async(req,res)=> {
       });
     }
 });
+
+router.get("/ngo/logout", async(req,res) => {
+  try{
+    logg.loggedinNgo = '';
+    if(logg.loggedinNgo){
+      return res.status(400).json({
+        message: "Session not cleared."
+      });
+    }
+
+    res.redirect("/");
+  }
+  catch(e){
+    console.log(e);
+    return res.status(500).json({
+      message: 'Server Error'
+    });
+  }
+});
 /**
  * @method - POST
  * @description - Get LoggedIn User

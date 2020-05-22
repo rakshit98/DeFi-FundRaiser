@@ -162,6 +162,25 @@ router.post(
  * @description - Get LoggedIn User
  * @param - /user/me
  */
+router.get("/donor/logout", async(req,res) => {
+  try{
+    logg.loggedinDonor = '';
+    if(logg.loggedinDonor){
+      return res.status(400).json({
+        message: "Session not cleared."
+      });
+    }
+
+    res.redirect("/");
+  }
+  catch(e){
+    console.log(e);
+    return res.status(500).json({
+      message: 'Server Error'
+    });
+  }
+});
+
 
 router.get("/donorhome", async (req, res) => {
   try {
