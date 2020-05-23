@@ -37,10 +37,15 @@ $( document ).ready(function() {
 	});
 	*/
     $.get( "/ngo/fundraiser", function( data ) {
-		console.log( "Data Loaded: " + data );
-		console.log(data[0].index);
-		console.log(data[0].name);
-		console.log(Object.keys(data).length); //get length of json array
+		data.forEach(function (fundraiser) {
+			console.log(fundraiser);
+			var name = fundraiser.name;
+			console.log(name);
+		    var newElement = document.createElement('div');
+		    newElement.id = fundraiser.name; newElement.className = "fundraiser";
+		    newElement.innerHTML = fundraiser.name;
+		    document.body.appendChild(newElement);
+		}) 
 	});
 </script>
 </head>
@@ -57,10 +62,5 @@ $( document ).ready(function() {
 	<h1>Hi NGO!</h1>
 	<button id="createfundraiser"><a href="/fundraiser/create">Create a Fundraiser</a></button>	
 	<div>Your Fundraisers : </div>
-	<ul>
-		<li>Fundraiser 1</li>
-		<li>Fundraiser 2</li>
-		<li>Fundraiser 3</li>
-	</ul>
 </body>
 </html>

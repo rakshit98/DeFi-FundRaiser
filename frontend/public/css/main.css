@@ -66,6 +66,17 @@ nav ul a{
 #createfundraiser a{
   color: #ff4500;
 }
+
+.fundraiser{
+  height: 50px;
+  width: 100px;
+  color: white;
+  background-color: red;
+  text-align: center;
+  margin: 15px;
+  line-height: 50px;
+  border-radius: 5px;
+}
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
 
