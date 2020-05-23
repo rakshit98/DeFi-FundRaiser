@@ -158,13 +158,13 @@ router.post(
   }
 );
 
-router.get('/ngo/fundraisers',async(req,res)=> {
+router.get('/ngo/fundraiser',async(req,res)=> {
 
     var ngoName;
     if(logg.loggedinNgo){
       ngoName = logg.loggedinNgo; 
     }
-
+    console.log(logg.loggedinNgo);
     try{
         
       let ngo = await Ngo.findOne({
@@ -184,7 +184,8 @@ router.get('/ngo/fundraisers',async(req,res)=> {
         if(!fund){
           res.send("No Fundraisers Started.");
         }
-        //Fundraisers under this NGO  
+        //Fundraisers under this NGO 
+        console.log(fund); 
         return res.json(fund);
     } catch(e){
       console.error(e);
@@ -195,6 +196,7 @@ router.get('/ngo/fundraisers',async(req,res)=> {
 });
 
 router.get("/ngo/logout", async(req,res) => {
+  console.log(logg.loggedinNgo);
   try{
     logg.loggedinNgo = '';
     if(logg.loggedinNgo){
@@ -202,7 +204,7 @@ router.get("/ngo/logout", async(req,res) => {
         message: "Session not cleared."
       });
     }
-
+    console.log(logg.loggedinNgo);
     res.redirect("/");
   }
   catch(e){
