@@ -213,6 +213,52 @@ router.get("/donorhome/transaction", async(req,res) => { //List out the transact
   }
 });
 
+router.post("/donorhome/withdraw", async(req,res) => {
+  const {donor_id, fund_id, amount} = req.body;
+  
+  try {
+    var result = await Transaction.findOneAndUpdate(
+      { "$and" : [{sender: donor_id},{recipient: fund_id},{status: 0},{amount: amount}]},
+      {
+        $set: {status: 3}
+      }
+      );
+      console.log(result);
+      wsk.Instance.post('/withdraw', {
+        donor_id: donor_id, //Input from FrontEnd
+        fundraiser_id: fund_id,
+        amount : amount //FrontEnd Input
+      })
+      .then(function (response) {
+        console.log(response.data);
+        if (!response.data.success){
+          process.exit(0);
+        }
+        res.status(200).json({
+          message: "Withdrawn."
+        });
+      })
+      .catch(function (error) {
+        if (error.response.data){
+          console.log(error.response.data);
+          if (error.response.data.error == 'unknown contract'){
+            console.error('You filled in the wrong contract address!');
+          }
+        } else {
+          console.log(error.response);
+        }
+        process.exit(0);
+      });
+  }
+  catch(e){
+
+    console.log(e);
+    res.send(400).json({
+      message: "Withdrawl cancelled."
+    })
+  }
+});
+
   router.post("/donorhome/donate" , async(req,res) =>{
 
     const {fund_id, donor, amount} = req.body;

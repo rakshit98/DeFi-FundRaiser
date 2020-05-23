@@ -8,6 +8,7 @@ const InitiateMongoServer = async () => {
     await mongoose.connect(MONGOURI, {
       useNewUrlParser: true
     });
+    mongoose.set('useFindAndModify', false);
     console.log("Connected to DB !!");
   } catch (e) {
     console.log(e);
