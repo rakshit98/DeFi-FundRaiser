@@ -162,7 +162,7 @@ router.post(
  * @description - Get LoggedIn User
  * @param - /user/me
  */
-router.get("/donor/logout", async(req,res) => {
+router.get("/donorhome/logout", async(req,res) => {
   try{
     logg.loggedinDonor = '';
     if(logg.loggedinDonor){
