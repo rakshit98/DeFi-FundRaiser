@@ -193,6 +193,26 @@ router.get("/donorhome/fundraiser", async (req, res) => {
   }
 });
 
+router.get("/donorhome/transaction", async(req,res) => { //List out the transaction carried by Donor.
+  var loggedIn = logg.loggedinDonor;
+  try{
+
+    loggedIn = await User.find({
+      username: loggedIn
+    });
+
+    loggedIn = loggedIn.index;
+
+    const list = await Transaction.find({
+      sender: loggedIn
+    });
+
+    return res.json(list);
+  } catch(e){
+    return res.send({message: "Problem fetching Donor.Please try again."});
+  }
+});
+
   router.post("/donorhome/donate" , async(req,res) =>{
 
     const {fund_id, donor, amount} = req.body;
