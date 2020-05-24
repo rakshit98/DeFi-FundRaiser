@@ -95,6 +95,8 @@ $(document).delegate('.donatebtn', 'click', function()
     }
 
         var ind = target.data('index');
+        console.log(ind);
+        console.log(amount);
         // var par = target.parent();
         // console.log(par.data('name'));
         $.ajax({
