@@ -65,7 +65,8 @@ $(document).delegate('.balancebtn', 'click', function()
         var ind = target.data('index');
         // var par = target.parent();
         // console.log(par.data('name'));
-        $.get("/ngo/fbalance?fund_id=ind",function(data){
+        var str = "/ngo/fbalance?fund_id=" + ind;
+        $.get(str,function(data){
             console.log(data);
         });
 });
