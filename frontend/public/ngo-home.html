@@ -48,7 +48,7 @@ $( document ).ready(function() {
 		}) 
 	});
 	$(document).ready(function () {   
-        $.get("/getname",function( data ){
+        $.get("/ngo/getname",function( data ){
         	console.log(data);
         	$("#homeheading").text("Welcome " + data.loggedinNgo);
         })    
