@@ -23,17 +23,22 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="/public/css/util.css">
 	<link rel="stylesheet" type="text/css" href="/public/css/main.css">
-<!--===============================================================================================-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><!--===============================================================================================-->
 <script>
 	$.get( "/donorhome/fundraiser", function( data ) {
 		data.forEach(function (fundraiser) {
-			console.log(fundraiser);
 			var name = fundraiser.name;
-			console.log(name);
 		    var newElement = document.createElement('div');
 		    newElement.id = fundraiser.name; newElement.className = "fundraiser";
 		    newElement.innerHTML = fundraiser.name;
+        $('#'+fundraiser.name).data('name',fundraiser.name);
+		  var balancebtn = document.createElement('button');
+		          balancebtn.className = "balancebtn";
+		  balancebtn.id= 'balancebtn-'+fundraiser.name;
+		  balancebtn.innerHTML = 'Show Balance';
+		  jQuery.data( balancebtn, "index", fundraiser.index );
+        newElement.appendChild(balancebtn);
 		    document.body.appendChild(newElement);
 		}) 
 	});
@@ -43,7 +48,9 @@
         	$("#homeheading").text("Welcome " + data.loggedinDonor);
         })    
 	});
-</script>
+</script><!--===============================================================================================-->
+<script src="../scripts/login.js"></script>
+<!--===============================================================================================-->
 
 </head>
 <body class="loggedinsection">

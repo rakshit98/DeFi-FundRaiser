@@ -50,10 +50,12 @@ $( document ).ready(function() {
 	$(document).ready(function () {   
         $.get("/ngo/getname",function( data ){
         	console.log(data);
-        	$("#homeheading").text("Welcome " + data.loggedinNgo);
+        	$("#homeheading").text("Welcome ");
         })    
 	});
-</script>
+</script><!--===============================================================================================-->
+<script src="../scripts/login.js"></script>
+<!--===============================================================================================-->
 </head>
 <body id = "ngoload" class="login loggedinsection getname">
 	<nav id="loggedinnav">

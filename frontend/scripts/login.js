@@ -55,18 +55,14 @@
     
 
 })(jQuery);
-// var donorform = $("#donorregister");
-// var donorbtn = donorform.find('.login100-form-btn');
 
-// var sendDonor = function() {
-//     $.ajax({
-//         url: 'http://localhost:3000/donorregister',
-//         data : {
-//                     name: bed_linen_count,
-//                     no_of_persbathtowel: bath_towel_count,
-//                     no_of_perskitchenlinen: kitchen_linen_count
-//                 },
-//         method: 'POST'
-
-//     })
-// }
+$('.balancebtn').on('click',function(){
+  var target = $(this);
+  console.log(target.data('index'));
+  var ind = target.data('index');
+  // var par = target.parent();
+  // console.log(par.data('name'));
+  $.get("/ngo/fbalance?fund_id=ind",function(data){
+    console.log(data);
+  });
+});
