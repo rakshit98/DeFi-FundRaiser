@@ -259,6 +259,25 @@ router.post("/donorhome/withdraw", async(req,res) => {
   }
 });
 
+router.get("/donorhome/getname", async(req,res) => {
+  var logg = logg.loggedinDonor;
+
+  try{
+    if(!logg){
+      return res.send("Login Again. Cannot fetch user.");
+    }
+    return res.json({
+      name: logg
+    });
+  }
+  catch(e){
+    console.log(e);
+    return res.status(500).json({
+      message: "Server Error."
+    });
+  }
+});
+
   router.post("/donorhome/donate" , async(req,res) =>{
 
     const {fund_id, donor, amount} = req.body;

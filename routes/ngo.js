@@ -195,6 +195,25 @@ router.get('/ngo/fundraiser',async(req,res)=> {
     }
 });
 
+router.get("/ngo/getname", async(req,res) => {
+  var logg = logg.loggedinNgo;
+
+  try{
+    if(!logg){
+      return res.send("Login Again. Cannot fetch user.");
+    }
+    return res.json({
+      name: logg
+    });
+  }
+  catch(e){
+    console.log(e);
+    return res.status(500).json({
+      message: "Server Error."
+    });
+  }
+});
+
 router.get("/ngo/logout", async(req,res) => {
   console.log(logg.loggedinNgo);
   try{
