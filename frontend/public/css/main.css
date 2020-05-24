@@ -117,7 +117,7 @@ nav ul a{
 
 .amountinput{
   position: absolute !important;
-  width: 100px !important;
+  width: 55px !important;
   right: 10px !important;
   bottom: 40px !important;
   background-color: transparent !important;
@@ -125,6 +125,7 @@ nav ul a{
   border-bottom: 1px solid black !important;
   color: black !important;
   text-align: center !important;
+  height: 15px !important;
 }
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/

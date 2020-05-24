@@ -58,7 +58,15 @@ $( document ).ready(function() {
         $.get("/ngo/getname",function( data ){
         	console.log(data);
         	$("#homeheading").text("Welcome " + data.name);
-        })    
+        });
+        $("#mybalance").click(function(){
+        	console.log("Clicked mybal");
+        	$.get("/ngo/balance",function(data){
+        		var mybal = data.bal;
+        		alert("Your balance is: " + mybal);
+        	})
+        })
+
 	});
 	
 </script><!--===============================================================================================-->
@@ -70,6 +78,7 @@ $( document ).ready(function() {
     	<div class="nav-wrapper">
       		<a href="/" class="brand-logo">DonorBox</a>
       		<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li id="mybalance"><a style="color: white;">My Balance</a></li>
         		<li><a href="/ngo/logout">Logout</a></li>
       		</ul>
     	</div>
