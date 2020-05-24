@@ -406,7 +406,7 @@ router.get("/donorhome/balance", async(req,res) => { //Fetch fundraiser balance
 
           wsk.Instance.post('/transfer', {
             fundraiser_id: fund_id, //Input from FrontEnd
-            amount: transfer_amount	
+            amount: trans_amount	
           })
           .then(function (response) {
             console.log(response.data);
