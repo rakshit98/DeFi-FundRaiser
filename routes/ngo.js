@@ -235,10 +235,10 @@ router.get("/ngo/logout", async(req,res) => {
 });
 
 router.get("/ngo/fbalance", async(req,res) => { //Fetch fundraiser balance.
-  console.log(req.query['fund_id']);
+  //console.log(req.query['fund_id']);
   try{
     var str = "/show_fundraiser_balance/" + req.query['fund_id'];
-    console.log(str); 
+    //console.log(str); 
     wsk.Instance.get(str)
     .then(function (response) {
       console.log(response.data);
