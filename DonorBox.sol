@@ -104,15 +104,15 @@ function milestone (uint256 fundraiser_id, uint256 amount) public{
 			return;
 }
 
-function show_ngo_balance(uint256 ngo_id) public view returns(uint256){
+function show_ngo_balance(uint256 ngo_id) public view returns(uint256 bal){
 		return _balance[NGO_Account[ngo_id-1].ngo_wallet];
 }
 
-function show_donor_balance(uint256 donor_id) public view returns(uint256){
+function show_donor_balance(uint256 donor_id) public view returns(uint256 bal){
 	return _balance[Donor_Account[donor_id-1].wallet];
 }
 
-function show_fundraiser_balance(uint256 fundraiser_id) public view returns(uint256){
+function show_fundraiser_balance(uint256 fundraiser_id) public view returns(uint256 bal){
 		return Fundraiser_Account[fundraiser_id-1].fund;
 }
 

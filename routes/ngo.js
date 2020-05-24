@@ -196,14 +196,14 @@ router.get('/ngo/fundraiser',async(req,res)=> {
 });
 
 router.get("/ngo/getname", async(req,res) => {
-  var logg = logg.loggedinNgo;
+  var logged = logg.loggedinNgo;
 
   try{
-    if(!logg){
+    if(!logged){
       return res.send("Login Again. Cannot fetch user.");
     }
     return res.json({
-      name: logg
+      name: logged
     });
   }
   catch(e){
@@ -234,20 +234,19 @@ router.get("/ngo/logout", async(req,res) => {
   }
 });
 
-router.get("/ngo/balance", async(req,res) => {
-  //const {fund_id} = req.body;
-  var fund_id = 1;
-  console.log(fund_id);
+router.get("/ngo/fbalance", async(req,res) => { //Fetch fundraiser balance.
+  console.log(req.query['fund_id']);
   try{
-    wsk.Instance.post('/show_fundraiser_balance', {
-      fundraiser_id: fund_id //Input from FrontEnd	//Autoincrement index pick from backend
-    })
+    var str = "/show_fundraiser_balance/" + req.query['fund_id'];
+    console.log(str); 
+    wsk.Instance.get(str)
     .then(function (response) {
       console.log(response.data);
       if (!response.data.success){
         process.exit(0);
       }
-      console.log(response.data[0].bal);
+      return res.status(200).json({
+        bal: response.data.data[0]["bal"]});
     })
     .catch(function (error) {
       if (error.response.data){
@@ -256,7 +255,42 @@ router.get("/ngo/balance", async(req,res) => {
           console.error('You filled in the wrong contract address!');
         }
       } else {
-        console.log(error.response);
+        console.log(error.response.error.details.data);
+      }
+      process.exit(0);
+    });
+  }
+  catch(e){
+    console.log(e);
+    return res.status(500).json({
+      message: "Server Error."
+    });
+  }
+});
+
+router.get("/ngo/balance", async(req,res) => { //Fetch fundraiser balance
+  //const {fund_id} = req.body;
+  console.log(req.query['ngo_id']);
+  try{
+    var str = "/show_ngo_balance/" + req.query['ngo_id'];
+    console.log(str); 
+    wsk.Instance.get(str)
+    .then(function (response) {
+      console.log(response.data);
+      if (!response.data.success){
+        process.exit(0);
+      }
+      return res.status(200).json({
+        bal: response.data.data[0]["bal"]});
+    })
+    .catch(function (error) {
+      if (error.response.data){
+        console.log(error.response.data);
+        if (error.response.data.error == 'unknown contract'){
+          console.error('You filled in the wrong contract address!');
+        }
+      } else {
+        console.log(error.response.error.details.data);
       }
       process.exit(0);
     });
