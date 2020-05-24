@@ -2,7 +2,7 @@ pragma solidity ^0.5.0;
 
 contract DonorBox {
 
-mapping (address => uint) _balance;
+mapping (address => uint256) _balance;
 
 mapping (uint256 => uint256) _owners; //Fundraiser to NGO
 
@@ -11,6 +11,7 @@ event Target(string milestone);
 event NGO_Transfer(string success,uint256 amount);
 event Fundraiser(string message,uint256 index, string name, uint256 target);
 event SignUp(string message,uint256 index,string name);
+event SignUp_d(string message,uint256 index,string name);
 event Transfer(string message,uint256 sender, uint256 receiver, uint256 amount);
 
 struct NGO { //NGO Account
@@ -43,7 +44,7 @@ function donor_signup(string memory name, address wallet) public{
 	uint256 index = Donor_Account.length;
 	Donor memory create = Donor(index+1,name,wallet);
 	Donor_Account.push(create);
-	emit SignUp("Donor Account Created", index+1,Donor_Account[index].name);
+	emit SignUp_d("Donor Account Created", index+1,Donor_Account[index].name);
 }
 
 function ngo_signup(string memory ngo_name, address wallet) public {
