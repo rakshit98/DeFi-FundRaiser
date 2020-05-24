@@ -55,7 +55,7 @@ $( document ).ready(function() {
 	$(document).ready(function () {   
         $.get("/ngo/getname",function( data ){
         	console.log(data);
-        	$("#homeheading").text("Welcome ");
+        	$("#homeheading").text("Welcome " + data.name);
         })    
 	});
 	
