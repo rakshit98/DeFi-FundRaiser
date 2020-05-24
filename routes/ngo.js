@@ -214,6 +214,43 @@ router.get("/ngo/logout", async(req,res) => {
     });
   }
 });
+
+router.get("/ngo/balance", async(req,res) => {
+  //const {fund_id} = req.body;
+  var fund_id = 1;
+  console.log(fund_id);
+  try{
+    wsk.Instance.post('/show_fundraiser_balance', {
+      fundraiser_id: fund_id //Input from FrontEnd	//Autoincrement index pick from backend
+    })
+    .then(function (response) {
+      console.log(response.data);
+      if (!response.data.success){
+        process.exit(0);
+      }
+      console.log(response.data[0].bal);
+    })
+    .catch(function (error) {
+      if (error.response.data){
+        console.log(error.response.data);
+        if (error.response.data.error == 'unknown contract'){
+          console.error('You filled in the wrong contract address!');
+        }
+      } else {
+        console.log(error.response);
+      }
+      process.exit(0);
+    });
+  }
+  catch(e){
+    console.log(e);
+    return res.status(500).json({
+      message: "Server Error."
+    });
+  }
+});
+
+
 /**
  * @method - POST
  * @description - Get LoggedIn User
