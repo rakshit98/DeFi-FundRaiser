@@ -45,7 +45,7 @@
 	$(document).ready(function () {   
         $.get("/donorhome/getname",function( data ){
         	console.log(data);
-        	$("#homeheading").text("Welcome " + data.loggedinDonor);
+        	$("#homeheading").text("Welcome " + data.name);
         })    
 	});
 </script><!--===============================================================================================-->
