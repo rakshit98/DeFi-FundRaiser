@@ -49,8 +49,8 @@ $( document ).ready(function() {
 	});
 	$(document).ready(function () {   
         $.get("/ngo/getname",function( data ){
-        	console.log("data: " + data);
-        	$("#homeheading").text("Welcome ");
+        	console.log(data);
+        	$("#homeheading").text("Welcome " + data.loggedinNgo);
         })    
 	});
 </script>

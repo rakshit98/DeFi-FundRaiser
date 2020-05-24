@@ -260,14 +260,50 @@ router.post("/donorhome/withdraw", async(req,res) => {
 });
 
 router.get("/donorhome/getname", async(req,res) => {
-  var logg = logg.loggedinDonor;
+  var logged = logg.loggedinDonor;
 
   try{
-    if(!logg){
+    if(!logged){
       return res.send("Login Again. Cannot fetch user.");
     }
     return res.json({
-      name: logg
+      name: logged
+    });
+  }
+  catch(e){
+    console.log(e);
+    return res.status(500).json({
+      message: "Server Error."
+    });
+  }
+});
+
+router.get("/donorhome/balance", async(req,res) => { //Fetch fundraiser balance
+  //const {fund_id} = req.body;
+  console.log(req.query['donor_id']);
+  try{
+    var str = "/show_donor_balance/" + req.query['donor_id'];
+    console.log(str); 
+    wsk.Instance.get(str)
+    .then(function (response) {
+      console.log(response.data);
+      if (!response.data.success){
+        process.exit(0);
+      }
+      return res.status(200).json({
+        bal: response.data.data[0]["bal"]});
+    })
+    .catch(function (error) {
+      if (error.response.data){
+        console.log(error.response.data);
+        if (error.response.data.error == 'unknown contract'){
+          console.error('You filled in the wrong contract address!');
+        }
+      } else {
+        console.log(error.response);
+        return res.send(400).json({message: "User does not exists."});
+      }
+      process.exit(0);
     });
   }
   catch(e){
@@ -371,7 +407,7 @@ router.get("/donorhome/getname", async(req,res) => {
 
           wsk.Instance.post('/transfer', {
             fundraiser_id: fund_id, //Input from FrontEnd
-            amount: transfer_amount	
+            amount: trans_amount	
           })
           .then(function (response) {
             console.log(response.data);

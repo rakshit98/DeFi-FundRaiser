@@ -39,8 +39,8 @@
 	});
 	$(document).ready(function () {   
         $.get("/donorhome/getname",function( data ){
-        	console.log("data: " + data);
-        	$("#homeheading").text("Welcome ");
+        	console.log(data);
+        	$("#homeheading").text("Welcome " + data.loggedinDonor);
         })    
 	});
 </script>
