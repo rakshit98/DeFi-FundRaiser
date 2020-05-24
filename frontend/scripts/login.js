@@ -70,3 +70,39 @@ $(document).delegate('.balancebtn', 'click', function()
             console.log(data);
         });
 });
+
+$(document).delegate('.donatebtn', 'click', function()
+{
+    var target = $(this);
+    console.log("clicked");
+    var fundname = target.data('name');
+    console.log(fundname);
+    var corresinput = $('#amount-'+fundname);
+    console.log(corresinput);
+    var amount = corresinput.val();
+    if(!amount){
+        alert("Amount cannot be empty");
+        return;
+    }
+    else if(isNaN(amount)){
+        alert("Amount has to be a number");
+        return;
+    }
+
+        var ind = target.data('index');
+        // var par = target.parent();
+        // console.log(par.data('name'));
+        $.ajax({
+            type: "POST",
+            url: '/donorhome/donate',
+            dataType: 'json',
+            data: {
+                "fund_id": ind,
+                "amount": amount
+            }
+        }).done(function (data) {
+                    console.log(data);
+                    alert("Transferred!");
+
+                });
+});

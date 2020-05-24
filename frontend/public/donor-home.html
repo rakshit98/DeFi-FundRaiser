@@ -33,12 +33,18 @@
 		    newElement.id = fundraiser.name; newElement.className = "fundraiser";
 		    newElement.innerHTML = fundraiser.name;
         $('#'+fundraiser.name).data('name',fundraiser.name);
+        var amountinput = document.createElement('input');
+		  amountinput.id="amount-"+fundraiser.name;
+		  amountinput.className = "amountinput";
+		  $('#amount-'+fundraiser.name).attr('placeholder','Enter amount here');
 		  var donatebtn = document.createElement('button');
 		          donatebtn.className = "donatebtn";
 		  donatebtn.id= 'donatebtn-'+fundraiser.name;
 		  donatebtn.innerHTML = 'Donate';
 		  jQuery.data( donatebtn, "index", fundraiser.index );
+		  jQuery.data( donatebtn, "name", fundraiser.name );
         newElement.appendChild(donatebtn);
+        newElement.appendChild(amountinput);
 		    document.body.appendChild(newElement);
 		}) 
 	});
