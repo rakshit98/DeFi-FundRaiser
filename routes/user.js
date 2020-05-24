@@ -17,8 +17,12 @@ const Fundraiser = require("../model/Fundraiser");
  * @description - User SignUp
  */
 
+router.get('/donor/transactions',function(req,res){
+    res.sendFile(path.resolve('frontend/public/donor-transactions.html'))
+});
+
 router.get('/donor/login',function(req,res){
-        res.sendFile(path.resolve('frontend/public/donor-login.html'))
+    res.sendFile(path.resolve('frontend/public/donor-login.html'))
     });
 
 router.get('/donor/signup',function(req,res){

@@ -63,11 +63,16 @@ $(document).delegate('.balancebtn', 'click', function()
         var target = $(this);
         console.log(target.data('index'));
         var ind = target.data('index');
+        var targetamount = target.data('target');
+        var bal;
         // var par = target.parent();
         // console.log(par.data('name'));
         var str = "/ngo/fbalance?fund_id=" + ind;
         $.get(str,function(data){
             console.log(data);
+            bal = data.bal;
+            $(this).html = "hello";
+            alert("Balance: " + bal+ "/" + targetamount);
         });
 });
 
