@@ -27,6 +27,39 @@
 <!--===============================================================================================-->
 <script src="../scripts/login.js"></script>
 <!--===============================================================================================-->
+<script type="text/javascript">
+
+	$(document).ready(function () {
+		console.log("Calling get");
+		$.get( "/donorhome/transaction", function( data ) {
+			data.forEach(function (transaction) {
+				console.log(data);
+				var name = transaction.recipient;
+				var amt = transaction.amount;
+				var status = transaction.status;
+			    var newElement = document.createElement('div');
+			    // newElement.id = transaction.name; newElement.className = "fundraiser";
+			    if(status==0)
+			    {
+			    	newElement.innerHTML = name;
+			        // $('#'+fundraiser.name).data('name',fundraiser.name);
+					var balancebtn = document.createElement('div');
+					balancebtn.className = "balancebtn";
+					// balancebtn.id= 'balancebtn-'+fundraiser.name;
+					balancebtn.innerHTML = 'Withdraw';
+					// jQuery.data( balancebtn, "index", fundraiser.index );
+					// jQuery.data( balancebtn, "target", fundraiser.target );
+			        newElement.appendChild(balancebtn);
+			    }
+			    var amtdiv = document.createElement('div');
+			    newElement.innerHTML = amt;
+			    newElement.appendChild(amtdiv);
+				    document.body.appendChild(newElement);
+				});
+			console.log("Done"); 
+		});
+	});
+</script>
 </head>
 <body class="loggedinsection">
 	<nav id="loggedinnav">
