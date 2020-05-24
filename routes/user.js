@@ -389,6 +389,7 @@ router.get("/donorhome/balance", async(req,res) => { //Fetch fundraiser balance
 
         if(data.event_type == 'event' && data.event_name == 'Milestone'){
 
+          console.log("Updating Database.");
           Transaction.update(
             {"$and" : [{recipient: fund_id}, {status: 0}]},
             {

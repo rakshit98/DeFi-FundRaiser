@@ -72,19 +72,19 @@ function milestone (uint256 fundraiser_id, uint256 amount) public{
 
 		if(Fundraiser_Account[fundraiser_id-1].fund > Fundraiser_Account[fundraiser_id-1].fundraiser_target/3 && Fundraiser_Account[fundraiser_id-1].fund < 2*Fundraiser_Account[fundraiser_id-1].fundraiser_target/3 && Fundraiser_Account[fundraiser_id-1].last_thresh == 0){
 			Fundraiser_Account[fundraiser_id-1].last_thresh = 1;
-			transfer(fundraiser_id,Fundraiser_Account[fundraiser_id-1].fund);
+			transfer(fundraiser_id,Fundraiser_Account[fundraiser_id-1].fundraiser_target/3);
 			emit Milestone("Milestone 1 achieved", Fundraiser_Account[fundraiser_id-1].fund);
 		}
 		else if(Fundraiser_Account[fundraiser_id-1].fund > 2*Fundraiser_Account[fundraiser_id-1].fundraiser_target/3 && Fundraiser_Account[fundraiser_id-1].fund < Fundraiser_Account[fundraiser_id-1].fundraiser_target && Fundraiser_Account[fundraiser_id-1].last_thresh ==1){
 			Fundraiser_Account[fundraiser_id-1].last_thresh = 2;
-			uint256 mon = Fundraiser_Account[fundraiser_id-1].fund - Fundraiser_Account[fundraiser_id-1].fundraiser_target/3;
+			uint256 mon = Fundraiser_Account[fundraiser_id-1].fundraiser_target/3;
 			transfer(fundraiser_id, mon);
 
 			emit Milestone("Milestone 2 achieved", Fundraiser_Account[fundraiser_id-1].fund - Fundraiser_Account[fundraiser_id-1].fundraiser_target/3);
 		}
 		else if(Fundraiser_Account[fundraiser_id-1].fund >= Fundraiser_Account[fundraiser_id-1].fundraiser_target && Fundraiser_Account[fundraiser_id-1].last_thresh == 2){
 			Fundraiser_Account[fundraiser_id-1].last_thresh = 3;
-			uint256 mon = Fundraiser_Account[fundraiser_id-1].fund - 2*Fundraiser_Account[fundraiser_id-1].fundraiser_target/3;
+			uint256 mon = Fundraiser_Account[fundraiser_id-1].fundraiser_target/3;
 			transfer(fundraiser_id,mon);
 
 			emit Milestone("Target reached", Fundraiser_Account[fundraiser_id-1].fund - Fundraiser_Account[fundraiser_id-1].fundraiser_target*2/3);
@@ -92,7 +92,6 @@ function milestone (uint256 fundraiser_id, uint256 amount) public{
 
 		else if(Fundraiser_Account[fundraiser_id-1].last_thresh == 3)
 			{
-				
 				transfer(fundraiser_id, amount);
 				emit Milestone("Target already achieved.Sending amount to owner.",amount);
 			}
@@ -109,7 +108,7 @@ function show_donor_balance(uint256 donor_id) public view returns(uint256 bal){
 }
 
 function show_fundraiser_balance(uint256 fundraiser_id) public view returns(uint256 bal){
-		return Fundraiser_Account[fundraiser_id-1].fund;
+		return _balance[Fundraiser_Account[fundraiser_id-1].fundraiser_wallet];
 }
 
 function transfer(uint256 fundraiser_id,uint256 amount) public {
