@@ -271,9 +271,13 @@ router.get("/ngo/fbalance", async(req,res) => { //Fetch fundraiser balance.
 
 router.get("/ngo/balance", async(req,res) => { //Fetch fundraiser balance
   //const {fund_id} = req.body;
-  console.log(req.query['ngo_id']);
+  var peace;
+  var ngo_d = await Ngo.findOne({
+    name: logg.loggedinNgo
+  });
+  peace = ngo_d.index; 
   try{
-    var str = "/show_ngo_balance/" + req.query['ngo_id'];
+    var str = "/show_ngo_balance/" + peace;
     console.log(str); 
     wsk.Instance.get(str)
     .then(function (response) {
