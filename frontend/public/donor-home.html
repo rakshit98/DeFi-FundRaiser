@@ -38,9 +38,9 @@
 		}) 
 	});
 	$(document).ready(function () {   
-        $.get("/getname",function( data ){
-        	console.log(data);
-        	$.("#homeheading").text("Welcome " + data.loggedinDonor);
+        $.get("/donorhome/getname",function( data ){
+        	console.log("data: " + data);
+        	$("#homeheading").text("Welcome ");
         })    
 	});
 </script>

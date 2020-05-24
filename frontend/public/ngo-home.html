@@ -48,9 +48,9 @@ $( document ).ready(function() {
 		}) 
 	});
 	$(document).ready(function () {   
-        $.get("/getname",function( data ){
-        	console.log(data);
-        	$("#homeheading").text("Welcome " + data.loggedinNgo);
+        $.get("/ngo/getname",function( data ){
+        	console.log("data: " + data);
+        	$("#homeheading").text("Welcome ");
         })    
 	});
 </script>
