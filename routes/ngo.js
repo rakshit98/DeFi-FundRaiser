@@ -255,7 +255,8 @@ router.get("/ngo/fbalance", async(req,res) => { //Fetch fundraiser balance.
           console.error('You filled in the wrong contract address!');
         }
       } else {
-        console.log(error.response.error.details.data);
+        console.log(error.response);
+        return res.send(400).json({message: "Fundraiser does not exists."});
       }
       process.exit(0);
     });
@@ -290,7 +291,8 @@ router.get("/ngo/balance", async(req,res) => { //Fetch fundraiser balance
           console.error('You filled in the wrong contract address!');
         }
       } else {
-        console.log(error.response.error.details.data);
+        console.log(error.response);
+        return res.send(400).json({message: "NGO does not exists."});
       }
       process.exit(0);
     });

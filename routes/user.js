@@ -300,7 +300,8 @@ router.get("/donorhome/balance", async(req,res) => { //Fetch fundraiser balance
           console.error('You filled in the wrong contract address!');
         }
       } else {
-        console.log(error.response.error.details.data);
+        console.log(error.response);
+        return res.send(400).json({message: "User does not exists."});
       }
       process.exit(0);
     });
