@@ -87,7 +87,7 @@ router.post(
       });
       wsk.ws.on('message', function incoming(data) {
            data = JSON.parse(data);
-      if (data.type == 'event' && data.event_name == 'SignUp'){
+      if (data.type == 'event' && data.event_name == 'SignUp_d'){
         console.log('New Account created Successfully', data);
         let index = data.event_data["index"];
         user = new User({ 
@@ -316,7 +316,15 @@ router.get("/donorhome/balance", async(req,res) => { //Fetch fundraiser balance
 
   router.post("/donorhome/donate" , async(req,res) =>{
 
-    const {fund_id, donor, amount} = req.body;
+    const {fund_id, amount} = req.body;
+    var user = await User.findOne({
+      username: logg.loggedinDonor
+    });
+    console.log(user);
+    const donor = user.index;
+    console.log(donor);
+    console.log(fund_id);
+    console.log(amount);
     var trans_amount;
     try {
       
@@ -381,21 +389,6 @@ router.get("/donorhome/balance", async(req,res) => { //Fetch fundraiser balance
 
         if(data.event_type == 'event' && data.event_name == 'Milestone'){
 
-          Transaction.aggregate([
-            { $match: { status : 0}},
-            {
-              $group:
-              {
-                _id : '$recipient',
-                total: { $sum: '$amount'}
-              }
-            },
-            { $match: {_id: donor}}
-            ])
-            .then(function (res){
-                trans_amount = res[0].total;
-            });
-
           Transaction.update(
             {"$and" : [{recipient: fund_id}, {status: 0}]},
             {
@@ -404,28 +397,6 @@ router.get("/donorhome/balance", async(req,res) => { //Fetch fundraiser balance
             },
             {multi: true}
           );
-
-          wsk.Instance.post('/transfer', {
-            fundraiser_id: fund_id, //Input from FrontEnd
-            amount: trans_amount	
-          })
-          .then(function (response) {
-            console.log(response.data);
-            if (!response.data.success){
-              process.exit(0);
-            }
-          })
-          .catch(function (error) {
-            if (error.response.data){
-              console.log(error.response.data);
-              if (error.response.data.error == 'unknown contract'){
-                console.error('You filled in the wrong contract address!');
-              }
-            } else {
-              console.log(error.response);
-            }
-            process.exit(0);
-          });
         }
       } 
 		});
