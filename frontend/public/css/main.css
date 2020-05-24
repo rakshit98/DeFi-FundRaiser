@@ -93,7 +93,7 @@ nav ul a{
   position: relative;
 }
 
-.balancebtn{
+.balancebtn, .donatebtn{
   position: absolute;
   font-size: 10px;
   right: 10px;

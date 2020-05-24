@@ -56,9 +56,10 @@
 
 })(jQuery);
 
-$(document).ready(function() {
-    $('.balancebtn').click(function(){
-        console.log("clicked");
+
+$(document).delegate('.balancebtn', 'click', function()
+{
+    console.log("clicked");
         var target = $(this);
         console.log(target.data('index'));
         var ind = target.data('index');
@@ -67,5 +68,4 @@ $(document).ready(function() {
         $.get("/ngo/fbalance?fund_id=ind",function(data){
             console.log(data);
         });
-    });
 });

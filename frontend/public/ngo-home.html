@@ -36,23 +36,24 @@ $( document ).ready(function() {
         console.log( "window loaded" );
 	});
 	*/
-    $.get( "/ngo/fundraiser", function( data ) {
-		data.forEach(function (fundraiser) {
-			var name = fundraiser.name;
-		    var newElement = document.createElement('div');
-		    newElement.id = fundraiser.name; newElement.className = "fundraiser";
-		    newElement.innerHTML = fundraiser.name;
-        $('#'+fundraiser.name).data('name',fundraiser.name);
-		  var balancebtn = document.createElement('button');
-		          balancebtn.className = "balancebtn";
-		  balancebtn.id= 'balancebtn-'+fundraiser.name;
-		  balancebtn.innerHTML = 'Show Balance';
-		  jQuery.data( balancebtn, "index", fundraiser.index );
-        newElement.appendChild(balancebtn);
-		    document.body.appendChild(newElement);
-		}) 
-	});
-	$(document).ready(function () {   
+	$(document).ready(function () {
+		$.get( "/ngo/fundraiser", function( data ) {
+			data.forEach(function (fundraiser) {
+				var name = fundraiser.name;
+			    var newElement = document.createElement('div');
+			    newElement.id = fundraiser.name; newElement.className = "fundraiser";
+			    newElement.innerHTML = fundraiser.name;
+		        $('#'+fundraiser.name).data('name',fundraiser.name);
+				var balancebtn = document.createElement('div');
+				balancebtn.className = "balancebtn";
+				balancebtn.id= 'balancebtn-'+fundraiser.name;
+				balancebtn.innerHTML = 'Show Balance';
+				jQuery.data( balancebtn, "index", fundraiser.index );
+		        newElement.appendChild(balancebtn);
+				    document.body.appendChild(newElement);
+				});
+				console.log("Done"); 
+		});   
         $.get("/ngo/getname",function( data ){
         	console.log(data);
         	$("#homeheading").text("Welcome ");
