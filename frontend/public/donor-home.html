@@ -27,10 +27,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$.get( "/donorhome/fundraiser", function( data ) {
-		console.log( "Data Loaded: " + data );
-		console.log(data[0].index);
-		console.log(data[0].name);
-		console.log(Object.keys(data).length); //get length of json array
+		data.forEach(function (fundraiser) {
+			console.log(fundraiser);
+			var name = fundraiser.name;
+			console.log(name);
+		    var newElement = document.createElement('div');
+		    newElement.id = fundraiser.name; newElement.className = "fundraiser";
+		    newElement.innerHTML = fundraiser.name;
+		    document.body.appendChild(newElement);
+		}) 
 	});
 </script>
 
@@ -40,7 +45,7 @@
     	<div class="nav-wrapper">
       		<a href="/" class="brand-logo">CrowdFund</a>
       		<ul id="nav-mobile" class="right hide-on-med-and-down">
-        		<li><a href="/logout">Logout</a></li>
+        		<li><a href="/donorhome/logout">Logout</a></li>
         		<li><a href="/"></a></li>
       		</ul>
     	</div>
