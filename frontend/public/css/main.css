@@ -4,6 +4,8 @@ form{
 
 .loggedinsection{
   background: linear-gradient(to bottom, #4272d7, white,#4272d7);
+  background-size: cover;
+  background-repeat: no-repeat; 
 }
 
 .submitbtn{
@@ -35,6 +37,11 @@ nav ul a{
   background-color: transparent;
 }
 
+#homeheading{
+  margin-bottom: 40px;
+  text-align: center;
+}
+
 .cover-photo{
 	background-image: url('../../assets/images/cover.jpg');
 	height: 100vh;
@@ -61,7 +68,7 @@ nav ul a{
 #createfundraiser{
   position: fixed;
   right: 50px;
-  top: 100px;
+  top: 140px;
   width: 200px;
   height: 50px;
   background-color: #FFCC00;
@@ -80,22 +87,24 @@ nav ul a{
 }
 
 .fundraiser{
-  height: 80px;
-  width: 300px;
+  height: 120px;
+  width: 400px;
   color: black;
   background-color: #FFCC00;
+  background-size: cover;
   text-align: center;
-  line-height: 40px;
+  line-height: 90px;
   border-radius: 10px;
   padding: 15px;
   margin: auto;
   margin-bottom: 20px;
   position: relative;
+  font-size: 24px;
 }
 
 .balancebtn, .donatebtn{
   position: absolute;
-  font-size: 10px;
+  font-size: 14px;
   right: 10px;
   bottom: 10px;
   padding: 5px;
@@ -104,6 +113,18 @@ nav ul a{
   border-radius: 4px;
   line-height: 10px;
   cursor: pointer;
+}
+
+.amountinput{
+  position: absolute;
+  width: 100px;
+  right: 10px;
+  bottom: 40px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  color: black;
+  text-align: center;
 }
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
