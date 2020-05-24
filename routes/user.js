@@ -326,10 +326,6 @@ router.get("/donorhome/balance", async(req,res) => { //Fetch fundraiser balance
     });
     console.log(user);
     const donor = user.index;
-    console.log(donor);
-    console.log(fund_id);
-    console.log(amount);
-    var trans_amount;
     try {
       
       wsk.Instance.post('/donor_to_fundraiser', {

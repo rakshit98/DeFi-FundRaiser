@@ -92,6 +92,8 @@ function milestone (uint256 fundraiser_id, uint256 amount) public{
 
 		else if(Fundraiser_Account[fundraiser_id-1].last_thresh == 3)
 			{
+				
+				transfer(fundraiser_id, amount);
 				emit Milestone("Target already achieved.Sending amount to owner.",amount);
 			}
 		else
