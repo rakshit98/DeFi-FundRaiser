@@ -201,16 +201,22 @@ router.get("/donorhome/transaction", async(req,res) => { //List out the transact
   var loggedIn = logg.loggedinDonor;
   try{
 
-    loggedIn = await User.find({
+    var loggedInF = await User.findOne({
       username: loggedIn
     });
 
-    loggedIn = loggedIn.index;
-
-    const list = await Transaction.find({
+    loggedIn = loggedInF.index;
+    console.log(loggedIn);
+    const list = await Transaction.findOne({
       sender: loggedIn
     });
 
+    if(!list){
+      return res.send(200).json({
+        message: "No Transactions."
+      })
+    }
+    console.log(list);
     return res.json(list);
   } catch(e){
     return res.send({message: "Problem fetching Donor.Please try again."});
