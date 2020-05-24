@@ -47,10 +47,16 @@ $( document ).ready(function() {
 		    document.body.appendChild(newElement);
 		}) 
 	});
+	$(document).ready(function () {   
+        $.get("/getname",function( data ){
+        	console.log(data);
+        	$("#homeheading").text("Welcome " + data.loggedinNgo);
+        })    
+	});
 </script>
 </head>
-<body id = "ngoload" class="login">
-	<nav>
+<body id = "ngoload" class="login loggedinsection getname">
+	<nav id="loggedinnav">
     	<div class="nav-wrapper">
       		<a href="/" class="brand-logo">CrowdFund</a>
       		<ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -59,7 +65,7 @@ $( document ).ready(function() {
       		</ul>
     	</div>
   	</nav>
-	<h1>Hi NGO!</h1>
+	<h1 id="homeheading"></h1>
 	<button id="createfundraiser"><a href="/fundraiser/create">Create a Fundraiser</a></button>	
 	<div>Your Fundraisers : </div>
 </body>

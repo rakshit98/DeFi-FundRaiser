@@ -32,11 +32,17 @@
 		console.log(data[0].name);
 		console.log(Object.keys(data).length); //get length of json array
 	});
+	$(document).ready(function () {   
+        $.get("/getname",function( data ){
+        	console.log(data);
+        	$.("#homeheading").text("Welcome " + data.loggedinDonor);
+        })    
+	});
 </script>
 
 </head>
-<body>
-	<nav>
+<body class="loggedinsection">
+	<nav id="loggedinnav">
     	<div class="nav-wrapper">
       		<a href="/" class="brand-logo">CrowdFund</a>
       		<ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -45,6 +51,6 @@
       		</ul>
     	</div>
   	</nav>
-	<h1>Hello Donor!</h1>
+	<div class="centerdiv"><h1 id="homeheading">Hello Donor!</h1></div>
 </body>
 </html>

@@ -2,6 +2,10 @@ form{
 	margin: auto;
 }
 
+.loggedinsection{
+  background: linear-gradient(to bottom, #4272d7, white,#4272d7);
+}
+
 .submitbtn{
 	border: 1px solid red;
 }
@@ -25,6 +29,10 @@ nav ul a{
 	padding: 0 10px;
 	background-color: transparent;
 	color: black;
+}
+
+#loggedinnav{
+  background-color: transparent;
 }
 
 .cover-photo{
@@ -63,19 +71,25 @@ nav ul a{
   padding: 15px;
 }
 
+.centerdiv{
+  text-align: center;
+  margin-bottom: 30px;
+}
 #createfundraiser a{
   color: #ff4500;
 }
 
 .fundraiser{
   height: 50px;
-  width: 100px;
-  color: white;
-  background-color: red;
+  width: 200px;
+  color: black;
+  background-color: #FFCC00;
   text-align: center;
-  margin: 15px;
-  line-height: 50px;
-  border-radius: 5px;
+  /*line-height: 50px;*/
+  border-radius: 10px;
+  padding: 15px;
+  margin: auto;
+  margin-bottom: 20px;
 }
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/

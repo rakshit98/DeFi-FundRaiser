@@ -15,7 +15,6 @@ const NGO = require('../model/Ngo');
  * @description - User SignUp
  */
 
-
 router.get('/fundraiser/create',function(req,res){
     res.sendFile(path.resolve('frontend/public/fundraiser-form.html'))
 });
