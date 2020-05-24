@@ -56,13 +56,16 @@
 
 })(jQuery);
 
-$('.balancebtn').on('click',function(){
-  var target = $(this);
-  console.log(target.data('index'));
-  var ind = target.data('index');
-  // var par = target.parent();
-  // console.log(par.data('name'));
-  $.get("/ngo/fbalance?fund_id=ind",function(data){
-    console.log(data);
-  });
+$(document).ready(function() {
+    $('.balancebtn').click(function(){
+        console.log("clicked");
+        var target = $(this);
+        console.log(target.data('index'));
+        var ind = target.data('index');
+        // var par = target.parent();
+        // console.log(par.data('name'));
+        $.get("/ngo/fbalance?fund_id=ind",function(data){
+            console.log(data);
+        });
+    });
 });

@@ -38,12 +38,17 @@ $( document ).ready(function() {
 	*/
     $.get( "/ngo/fundraiser", function( data ) {
 		data.forEach(function (fundraiser) {
-			console.log(fundraiser);
 			var name = fundraiser.name;
-			console.log(name);
 		    var newElement = document.createElement('div');
 		    newElement.id = fundraiser.name; newElement.className = "fundraiser";
 		    newElement.innerHTML = fundraiser.name;
+        $('#'+fundraiser.name).data('name',fundraiser.name);
+		  var balancebtn = document.createElement('button');
+		          balancebtn.className = "balancebtn";
+		  balancebtn.id= 'balancebtn-'+fundraiser.name;
+		  balancebtn.innerHTML = 'Show Balance';
+		  jQuery.data( balancebtn, "index", fundraiser.index );
+        newElement.appendChild(balancebtn);
 		    document.body.appendChild(newElement);
 		}) 
 	});
@@ -53,6 +58,7 @@ $( document ).ready(function() {
         	$("#homeheading").text("Welcome ");
         })    
 	});
+	
 </script><!--===============================================================================================-->
 <script src="../scripts/login.js"></script>
 <!--===============================================================================================-->

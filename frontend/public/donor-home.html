@@ -27,20 +27,20 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><!--===============================================================================================-->
 <script>
 	$.get( "/donorhome/fundraiser", function( data ) {
-		data.forEach(function (fundraiser) {
-			var name = fundraiser.name;
-		    var newElement = document.createElement('div');
-		    newElement.id = fundraiser.name; newElement.className = "fundraiser";
-		    newElement.innerHTML = fundraiser.name;
-        $('#'+fundraiser.name).data('name',fundraiser.name);
-		  var balancebtn = document.createElement('button');
-		          balancebtn.className = "balancebtn";
-		  balancebtn.id= 'balancebtn-'+fundraiser.name;
-		  balancebtn.innerHTML = 'Show Balance';
-		  jQuery.data( balancebtn, "index", fundraiser.index );
-        newElement.appendChild(balancebtn);
-		    document.body.appendChild(newElement);
-		}) 
+		// data.forEach(function (fundraiser) {
+		// 	var name = fundraiser.name;
+		//     var newElement = document.createElement('div');
+		//     newElement.id = fundraiser.name; newElement.className = "fundraiser";
+		//     newElement.innerHTML = fundraiser.name;
+  //       $('#'+fundraiser.name).data('name',fundraiser.name);
+		//   var balancebtn = document.createElement('button');
+		//           balancebtn.className = "balancebtn";
+		//   balancebtn.id= 'balancebtn-'+fundraiser.name;
+		//   balancebtn.innerHTML = 'Show Balance';
+		//   jQuery.data( balancebtn, "index", fundraiser.index );
+  //       newElement.appendChild(balancebtn);
+		//     document.body.appendChild(newElement);
+		// }) 
 	});
 	$(document).ready(function () {   
         $.get("/donorhome/getname",function( data ){
